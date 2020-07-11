@@ -1,0 +1,104 @@
+{
+  "name": "behaveplus-radical",
+  "version": "0.1.0",
+  "description": "A radical implementation of BehavePlus",
+  "keywords": [],
+  "author": "Collin D. Bevins <cbevins@montana.com>",
+  "license": "MIT",
+  "main": "./dist/bundle.esm.js",
+  "exports": "./dist/bundle.esm.js",
+  "module": "./dist/bundle.esm.js",
+  "sideEffects": false,
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "rollup -c",
+    "test": "jest",
+    "test:clear": "jest --clearCache",
+    "test:coverage": "jest --coverage",
+    "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
+    "test:watch": "jest --watch",
+    "lint": "eslint \"**/*.js\"",
+    "lint:fix": "prettier-eslint \"**/*.js\" --write",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbevins/behaveplus-radical.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cbevins/behaveplus-radical/issues"
+  },
+  "homepage": "https://github.com/cbevins/behaveplus-radical#readme",
+  "devDependencies": {
+    "@babel/core": "7.9.6",
+    "@babel/plugin-transform-modules-commonjs": "7.10.4",
+    "@babel/preset-env": "7.9.6",
+    "@babel/preset-react": "7.9.4",
+    "@rollup/plugin-babel": "5.0.0",
+    "@rollup/plugin-json": "4.0.3",
+    "@rollup/plugin-node-resolve": "7.1.3",
+    "@rollup/pluginutils": "3.0.10",
+    "babel-jest": "26.0.1",
+    "coveralls": "3.1.0",
+    "eslint": "7.3.1",
+    "eslint-config-standard": "14.1.1",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-jest": "23.10.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-standard": "4.0.1",
+    "jest": "26.0.1",
+    "prettier-eslint": "9.0.1",
+    "prettier-eslint-cli": "5.0.0",
+    "rimraf": "3.0.2",
+    "rollup": "2.9.1",
+    "rollup-plugin-babel": "4.4.0",
+    "rollup-plugin-terser": "5.3.0",
+    "rollup-plugin-uglify": "6.0.4"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest",
+      "^.+\\.mjs?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/behaveplus-core",
+      "node_modules/behaveplus-models"
+    ],
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/archive"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "**/*Deprecated.{js,jsx}",
+      "!**/index.js",
+      "!**/archive/**",
+      "!**/coverage/**",
+      "!**/dist/**",
+      "!**/node_modules/**",
+      "!**/utils/**",
+      "!**/vendor/**",
+      "!**/delayed__tests__/",
+      "!app.js",
+      "!checkLint.js",
+      "!**/.eslintrc.js",
+      "!rollup.config.js",
+      "!**/Contain.js"
+    ]
+  },
+  "dependencies": {
+    "behaveplus-core": "file:../behaveplus-core",
+    "behaveplus-models": "file:../behaveplus-models"
+  }
+}

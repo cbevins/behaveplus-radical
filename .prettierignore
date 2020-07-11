@@ -1,0 +1,7 @@
+README.md
+coverage
+dist
+node_modules
+docs
+src/utils/Bpx*
+src/equations/FuelCatalogData.js
