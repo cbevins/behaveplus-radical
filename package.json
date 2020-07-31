@@ -28,6 +28,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rollup -c",
+    "compiler": "node ./src/compiler/BpxDnaCompiler.js",
     "test": "jest",
     "test:clear": "jest --clearCache",
     "test:coverage": "jest --coverage",

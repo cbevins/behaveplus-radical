@@ -1,3 +1,14 @@
+/**
+ * The DagTopology file provides functions to:
+ * - select updater methods
+ * - determine Node producers and consumers, and
+ * - determine Node depth and topological order.
+ * @copyright 2020 Systems for Environmental Management
+ * @author Collin D. Bevins, <cbevins@montana.com>
+ * @license MIT
+ * @version 0.1.0
+ * coverage-20200506
+ */
 export function reset (dag) {
   dag.node.forEach(node => {
     node.consumers = [] // array of Node references
@@ -66,7 +77,7 @@ function resetNodeDepths (dag) {
   // Step 1 - determine depth of the consumer chain for each Node
   let maxDepth = 0
   dag.node.forEach((node, nodeIdx) => {
-    maxDepth = Math.max(maxDepth, deriveConsumerDepth(node, [nodeIdx]))
+    maxDepth = Math.max(maxDepth, resetNodeDepth(node, [nodeIdx]))
   })
 
   // Step 2 - ensure input Nodes are processed after all other Nodes at the same depth
@@ -90,7 +101,7 @@ function resetNodeDepths (dag) {
  * @param {Node} node
  * @param {integer[]} visited An array of indices of Nodes that have been traversed from the start of the chain
  */
-function deriveConsumerDepth (node, visited) {
+function resetNodeDepth (node, visited) {
   // If this Node doesn't yet have a depth, derive it
   if (!node.depth) {
     let maxDepth = 0
@@ -101,7 +112,7 @@ function deriveConsumerDepth (node, visited) {
         throw new Error(`Cyclical dependency detected:\n${visited.join(' required by ->\n')}`)
       }
       visited.push(consumer.idx)
-      const depth = deriveConsumerDepth(consumer, visited)
+      const depth = resetNodeDepth(consumer, visited)
       visited.pop()
       maxDepth = Math.max(depth, maxDepth)
     })
@@ -112,16 +123,16 @@ function deriveConsumerDepth (node, visited) {
 
 // Returns the current appropriate updater index for nodeIdx
 export function selectNodeUpdaterIdx (dag, nodeIdx) {
-  const updaters = dag.nodeUpdaters(nodeIdx)
+  const updaters = dag.dna.updater[nodeIdx]
   for (let updaterIdx = 0; updaterIdx < updaters.length; updaterIdx++) {
-    const condition = dag.nodeUpdaterCondition(nodeIdx, updaterIdx)
-    if (condition.length) { // if condition has members, then this is 'when'
+    const condition = dag.dna.updater[nodeIdx][updaterIdx][0]
+    if (condition.length) { // if condition has members, then this is a 'when' condition
       const [configIdx, valueIdx] = condition
-      if (dag.node[configIdx].value === dag.literal(valueIdx)) {
-        return updaterIdx
+      if (dag.node[configIdx].value === dag.literal(valueIdx)) { // if config Node has this value,
+        return updaterIdx // this is the appropriate updater
       }
-    } else { // if empty condition, then this is 'finally'
-      return updaterIdx
+    } else { // if empty, then this is a 'finally' condition
+      return updaterIdx // this is the appropriate updater
     }
   }
   return 0
