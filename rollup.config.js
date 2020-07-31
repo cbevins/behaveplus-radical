@@ -5,13 +5,12 @@ import babel from 'rollup-plugin-babel'
 const dist = 'dist'
 const packageName = 'bundle'
 const bundle = `${dist}/${packageName}`
-// const bundle = 'dist/foo'
 
 // const production = !process.env.ROLLUP_WATCH
 
 export default [
   {
-    input: 'src/index.js',
+    input: 'src/bundle/index.js',
     output: [
       {
         file: `${bundle}.esm.js`,

@@ -5,7 +5,6 @@
     "node": true
   },
   "extends": [
-    "plugin:react/recommended",
     "plugin:jest/recommended",
     "standard"
   ],
@@ -20,6 +19,6 @@
     "ecmaVersion": 2019,
     "sourceType": "module"
   },
-  "plugins": ["jest", "react"],
+  "plugins": ["jest"],
   "rules": {}
 }

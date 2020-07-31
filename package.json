@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "description": "A radical implementation of BehavePlus",
   "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbevins/behaveplus-radical.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cbevins/behaveplus-radical/issues"
+  },
+  "homepage": "https://github.com/cbevins/behaveplus-radical#readme",
+
   "author": "Collin D. Bevins <cbevins@montana.com>",
   "license": "MIT",
   "main": "./dist/bundle.esm.js",
@@ -28,14 +37,6 @@
     "lint:fix": "prettier-eslint \"**/*.js\" --write",
     "prepare": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cbevins/behaveplus-radical.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cbevins/behaveplus-radical/issues"
-  },
-  "homepage": "https://github.com/cbevins/behaveplus-radical#readme",
   "devDependencies": {
     "@babel/core": "7.9.6",
     "@babel/plugin-transform-modules-commonjs": "7.10.4",
@@ -47,7 +48,7 @@
     "@rollup/pluginutils": "3.0.10",
     "babel-jest": "26.0.1",
     "coveralls": "3.1.0",
-    "eslint": "7.3.1",
+    "eslint": "7.4.0",
     "eslint-config-standard": "14.1.1",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jest": "23.10.0",
@@ -70,26 +71,21 @@
       "^.+\\.mjs?$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/behaveplus-core",
-      "node_modules/behaveplus-models"
-    ],
-    "setupFilesAfterEnv": [
-      "./jest.setup.js"
+      "node_modules"
     ],
     "testPathIgnorePatterns": [
-      "<rootDir>/archive"
+      "__delayed__",
+      "deprecated",
+      "testData.js"
     ],
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
-      "**/*Deprecated.{js,jsx}",
       "!**/index.js",
-      "!**/archive/**",
       "!**/coverage/**",
       "!**/dist/**",
       "!**/node_modules/**",
       "!**/utils/**",
-      "!**/vendor/**",
-      "!**/delayed__tests__/",
+      "!**/__delayed__/**",
       "!app.js",
       "!checkLint.js",
       "!**/.eslintrc.js",
@@ -97,8 +93,5 @@
       "!**/Contain.js"
     ]
   },
-  "dependencies": {
-    "behaveplus-core": "file:../behaveplus-core",
-    "behaveplus-models": "file:../behaveplus-models"
-  }
+  "dependencies": {}
 }
