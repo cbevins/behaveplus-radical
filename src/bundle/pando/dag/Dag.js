@@ -34,6 +34,9 @@ export class Dag {
   // Returns an array of all required, updatable (non-Config-ish) Node references in topological order.
   requiredUpdateNodes () { return this.dna.requiredUpdateNodes() }
 
+  // Sets the inputs values of zero or more input Nodes AND updates all Dag Node values
+  runInputs (keyValuePairs) { return this.dna.runInputs(keyValuePairs) }
+
   // Returns an array of references to all selected Nodes
   selectedNodes () { return this.dna.selectedNodes() }
 

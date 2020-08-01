@@ -38,7 +38,6 @@ test('4: Dag.setConfigs(), selectNodeUpdaterIdx()', () => {
   const dag = new Dag(Dna)
   dag.setConfigs([[cfgFuelKey, 'catalog']])
   expect(dag.get(cfgFuelKey).value).toEqual('catalog')
-  expect(dag.get(domainKey).update.idx).toEqual(0)
   expect(dag.get(domainKey).producers.length).toEqual(1)
   expect(dag.get(domainKey).update.method).toEqual(Lib.FuelCatalog.domain)
   expect(dag.get(domainKey).update.args.length).toEqual(1)
@@ -47,22 +46,20 @@ test('4: Dag.setConfigs(), selectNodeUpdaterIdx()', () => {
 
   dag.setConfigs([[cfgFuelKey, 'behave']])
   expect(dag.get(cfgFuelKey).value).toEqual('behave')
-  expect(dag.get(domainKey).update.idx).toEqual(1)
   expect(dag.get(domainKey).update.method).toEqual(DagLib.fixed)
 
   dag.setConfigs([[cfgFuelKey, 'chaparral']])
   expect(dag.get(cfgFuelKey).value).toEqual('chaparral')
-  expect(dag.get(domainKey).update.idx).toEqual(2)
 
   dag.setConfigs([[cfgFuelKey, 'palmettoGallberry']])
   expect(dag.get(cfgFuelKey).value).toEqual('palmettoGallberry')
-  expect(dag.get(domainKey).update.idx).toEqual(3)
 
   dag.setConfigs([[cfgFuelKey, 'westernAspen']])
   expect(dag.get(cfgFuelKey).value).toEqual('westernAspen')
-  expect(dag.get(domainKey).update.idx).toEqual(4)
 
   expect(() => dag.setConfigs([[cfgFuelKey, 'noSuchOption']])).toThrow()
+  expect(() => dag.setConfigs([[cfgFuelKey]])).toThrow()
+  expect(() => dag.setConfigs([cfgFuelKey])).toThrow()
 })
 
 test('5: Dag.setSelected()', () => {
@@ -85,11 +82,46 @@ test('5: Dag.setSelected()', () => {
   dag.setSelected([[deadLoadKey, true]])
   expect(dag.selectedNodes()).toEqual([dag.get(deadLoadKey)])
 
-  const requiredNodes = dag.requiredNodes()
-  // console.log('Required:\n', requiredNodes.map(node => node.key))
+  const reqNodes = dag.requiredNodes()
+  expect(reqNodes).toContain(dag.get(deadLoadKey))
+  expect(reqNodes).toContain(dag.get(catalogKey))
+  // log('Required', reqNodes)
 
   expect(dag.get(catalogKey).update.method).toEqual(DagLib.input)
   expect(dag.nodeIsInput(dag.get(catalogKey))).toEqual(true)
   const inputNodes = dag.requiredInputNodes()
   expect(inputNodes.length).toEqual(1)
+  expect(inputNodes).toContain(dag.get(catalogKey))
+})
+
+test('6: Dag.setInputs()', () => {
+  const dag = new Dag(Dna)
+  dag.setConfigs([[cfgFuelKey, 'catalog']])
+  dag.setSelected([[deadLoadKey, true]])
+  const reqInputs = dag.requiredInputNodes()
+  // console.log('Required Inputs', reqInputs.map(node => node.key))
+  expect(reqInputs.length).toEqual(1)
+  expect(reqInputs).toContain(dag.get(catalogKey))
+
+  dag.setInputs([[catalogKey, '10']])
+  expect(() => dag.setInputs([[catalogKey, 'noSuchCatalogKey']])).toThrow()
+  expect(() => dag.setInputs([[catalogKey]])).toThrow()
+  expect(() => dag.setInputs([catalogKey])).toThrow()
+})
+
+test('7: Dag.runInputs()', () => {
+  const dag = new Dag(Dna)
+  const deadLoad = dag.get(deadLoadKey)
+  const tl1hLoad = dag.get(tl1hLoadKey)
+  expect(deadLoad.value).toEqual(0)
+
+  dag.setConfigs([[cfgFuelKey, 'catalog']])
+  dag.setSelected([[deadLoad, true]])
+  dag.runInputs([[catalogKey, '10']])
+  expect(deadLoad.value).toEqual(0.138)
+  expect(tl1hLoad.value).toEqual(0.138)
+
+  dag.runInputs([[catalogKey, '124']])
+  expect(deadLoad.value).toEqual(0.0872359963269054)
+  expect(tl1hLoad.value).toEqual(0.0872359963269054)
 })

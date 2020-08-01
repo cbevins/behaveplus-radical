@@ -1,4 +1,5 @@
 import * as Topology from './DagTopology.js'
+import { update } from './DagUpdate.js'
 
 // Repackages an array of [<keyOrIdx>, <value>] pairs as an array of [<node>, <value>] pairs
 function _refVals (dag, pairs, name) {
@@ -15,20 +16,50 @@ function _refVals (dag, pairs, name) {
   return refVals
 }
 
+function _valid (node, value, message) {
+  if (!(node.variant.isValid(value)).pass) throw new Error(message)
+  return value
+}
+
+// Sets the value of zero or more Config Nodes, resets the Dag topology,
+// AND resets the Required and Input Stes and updates the Dag Node values
+export function runConfigs (dag, keyValuePairs) {
+  setConfigs(dag, keyValuePairs)
+  runSelected([])
+}
+
+// Adds the values of zero or more Nodes to the Input Set
+// AND then updates the Dag Node values
+export function runInputs (dag, keyValuePairs) {
+  setInputs(dag, keyValuePairs)
+  update(dag)
+}
+
+// Adds or deletes zero or more Nodes from the Selected Set, resets the Required and Input Set,
+// NAD then updates the Dag Node values
+export function runSelected (dag, keyValuePairs) {
+  setSelected(dag, keyValuePairs)
+  update(dag)
+}
+
 // Sets the value of zero or more Config Nodes and resets the Dag topology
 export function setConfigs (dag, keyValuePairs) {
-  _refVals(dag, keyValuePairs, 'setConfigs').forEach(pair => { setValue(pair[0], pair[1]) })
+  _refVals(dag, keyValuePairs, 'setConfigs').forEach(([node, value]) => {
+    node.value = _valid(node, value, `Config Node '${node.key}' value '${value}' is invalid`)
+  })
   Topology.reset(dag)
 }
 
-// Sets the inputs values of zero or more input Nodes WITHOUT updating node values.
+// Adds the values of zero or more Nodes to the Input Set WITHOUT updating node values.
 export function setInputs (dag, keyValuePairs) {
-  _refVals(dag, keyValuePairs, 'setInputs').forEach(pair => {
-    dag.input.set(pair[0], Array.isArray(pair[1]) ? pair[1] : [pair[1]])
+  _refVals(dag, keyValuePairs, 'setInputs').forEach(([node, value]) => {
+    const values = Array.isArray(value) ? value : [value] // ensure values are in an array
+    values.forEach(value => { _valid(node, value, `Input Node '${node.key}' value '${value}' is invalid`) })
+    dag.input.set(node, values)
   })
 }
 
-// Determines the set of required Nodes
+// Determines the Set of required Nodes
 // Should be called after setSelected()
 export function setRequiredNodes (dag) {
   dag.required.clear()
@@ -37,34 +68,24 @@ export function setRequiredNodes (dag) {
   })
 }
 
-// Recursively determines the set of required Nodes
+// Recursively determines the Set of required Nodes
 function setRequiredRecursive (dag, node) {
   if (!dag.required.has(node)) { // Nothing more to do if node is already required
     dag.required.add(node) // Add node to the required set
-    // Add all Config nodes referenced by node to the required set
+    // Add all Config nodes referenced by node to the Required Set
     dag.nodeConfigs(node).forEach(config => { dag.required.add(config) })
-    // Add all this Nodes producer Nodes to the required set
-    node.producers.forEach(producer => setRequiredRecursive(dag, producer))
+    // Add all this Node's producer Nodes to the Required Set
+    node.producers.forEach(producer => {
+      if (!producer.isEnabled) throw new Error(`Node '${node.key}' has disabled producer '${producer.key}'`)
+      setRequiredRecursive(dag, producer)
+    })
   }
 }
 
-// Adds or deletes zero or more Nodes from the selection set
+// Adds or deletes zero or more Nodes from the Selected Set
 export function setSelected (dag, keyValuePairs) {
-  _refVals(dag, keyValuePairs, 'setSelected').forEach(pair => {
-    if (pair[1]) {
-      dag.selected.add(pair[0])
-    } else {
-      dag.selected.delete(pair[0])
-    }
+  _refVals(dag, keyValuePairs, 'setSelected').forEach(([node, select]) => {
+    return select ? dag.selected.add(node) : dag.selected.delete(node)
   })
   setRequiredNodes(dag)
-}
-
-// Validates and sets a value for node
-function setValue (node, value) {
-  const valid = node.variant.isValid(value)
-  if (!valid.pass) {
-    throw new Error(`Node '${node.key}' value '${value}' is invalid`)
-  }
-  node.value = value
 }
