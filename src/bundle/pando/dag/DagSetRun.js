@@ -25,7 +25,7 @@ function _valid (node, value, message) {
 // AND resets the Required and Input Stes and updates the Dag Node values
 export function runConfigs (dag, keyValuePairs) {
   setConfigs(dag, keyValuePairs)
-  runSelected([])
+  runSelected(dag, [])
 }
 
 // Adds the values of zero or more Nodes to the Input Set

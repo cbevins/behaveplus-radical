@@ -27,8 +27,12 @@ export class Node {
     this.variant = variantRef
   }
 
-  refresh () {
-    const args = this.update.args.map(arg => (arg instanceof Node) ? arg.value : arg)
+  updateValue () {
+    // DO NOT use this.update.args.map(), as it increases time by 50%
+    const args = []
+    this.update.args.forEach(parm => {
+      args.push((parm instanceof Node) ? parm.value : parm)
+    })
     this.value = this.update.method.apply(this, args)
   }
 }

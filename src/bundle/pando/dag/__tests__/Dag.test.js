@@ -13,6 +13,8 @@ const tl1hLoadKey = 'surface.primary.fuel.model.behave.parms.dead.tl1h.ovendryLo
 test('1: new Dag()', () => {
   const dag = new Dag(Dna)
   expect(dag instanceof Dag).toEqual(true)
+  expect(() => new Dag()).toThrow()
+  expect(() => new Dag(catalogKey)).toThrow()
 })
 
 test('2: Dag.get(), Node.idx, Node.key', () => {

@@ -10,6 +10,8 @@ import { DagDna } from './DagDna.js'
 
 export class Dag {
   constructor (dna) {
+    if (arguments.length !== 1) throw new Error('new Dag(dna) requires a Dna argument')
+    if (dna.dagMethod === undefined) throw new Error('new Dag(dna) arg 1 is not a valid Dna argument')
     this.dna = new DagDna(dna)
   }
 
@@ -34,8 +36,14 @@ export class Dag {
   // Returns an array of all required, updatable (non-Config-ish) Node references in topological order.
   requiredUpdateNodes () { return this.dna.requiredUpdateNodes() }
 
+  // Sets the value of zero or more Config Nodes, then resets the DAG topology and Required Set
+  runConfigs (keyValuePairs) { return this.dna.runConfigs(keyValuePairs) }
+
   // Sets the inputs values of zero or more input Nodes AND updates all Dag Node values
   runInputs (keyValuePairs) { return this.dna.runInputs(keyValuePairs) }
+
+  // Sets the value of zero or more Config Nodes, then resets the Required Set AND updates all Dag Node values
+  runSelected (keyValuePairs) { return this.dna.runSelected(keyValuePairs) }
 
   // Returns an array of references to all selected Nodes
   selectedNodes () { return this.dna.selectedNodes() }

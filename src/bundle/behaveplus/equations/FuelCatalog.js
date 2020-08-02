@@ -42,7 +42,7 @@ export function hasKey (key) {
  * @return A sorted array of all the fuel catalog model Map key strings.
  */
 export function keys () {
-  return Array.from(Fuel.Model.keys()).sort()
+  return Array.from(Fuel.Alias.keys()).sort()
 }
 
 /**
