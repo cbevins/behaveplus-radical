@@ -27,12 +27,30 @@ export class Node {
     this.variant = variantRef
   }
 
+  /**
+   * Return Node's value as a (possibly decorated) string
+   * For Quantity, the string is the current value after:
+   * - conversion into the current display units-of-measure,
+   * - truncation of digits to current display precision, decimals, or exponentiation, and
+   * - the current units-of-measure string appended.
+   */
+  displayString () { return this.variant.displayString(this.value) }
+
+  /**
+   * Return Node's value as a (possibly decorated) string
+   * For Quantity, the string is the current value after:
+   * - conversion into the current display units-of-measure, and
+   * - truncation of digits to current display precision, decimals, or exponentiation.
+   */
+  displayValue () { return this.variant.displayValue(this.value) }
+
   updateValue () {
     // DO NOT use this.update.args.map(), as it increases time by 50%
     const args = []
-    this.update.args.forEach(parm => {
+    for (let i = 0; i < this.update.args.length; i++) {
+      const parm = this.update.args[i]
       args.push((parm instanceof Node) ? parm.value : parm)
-    })
+    }
     this.value = this.update.method.apply(this, args)
   }
 }
