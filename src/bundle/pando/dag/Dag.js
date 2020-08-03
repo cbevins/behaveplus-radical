@@ -39,11 +39,17 @@ export class Dag {
   // Sets the value of zero or more Config Nodes, then resets the DAG topology and Required Set
   runConfigs (keyValuePairs) { return this.dna.runConfigs(keyValuePairs) }
 
+  // Returns an array of result run indices that satisfy the input node-value pair specs
+  runIndices (inputNodeValuePairs) { return this.dna.runIndices(inputNodeValuePairs) }
+
   // Sets the inputs values of zero or more input Nodes AND updates all Dag Node values
   runInputs (keyValuePairs) { return this.dna.runInputs(keyValuePairs) }
 
   // Sets the value of zero or more Config Nodes, then resets the Required Set AND updates all Dag Node values
   runSelected (keyValuePairs) { return this.dna.runSelected(keyValuePairs) }
+
+  // Returns the Node's result value for the specified run index
+  runValue (nodeRefOrKey, runIdx) { return this.dna.runValue(nodeRefOrKey, runIdx) }
 
   // Returns an array of references to all selected Nodes
   selectedNodes () { return this.dna.selectedNodes() }

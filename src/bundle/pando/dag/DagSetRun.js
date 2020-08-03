@@ -1,3 +1,4 @@
+import * as Store from './DagStore.js'
 import * as Topology from './DagTopology.js'
 import { update } from './DagUpdate.js'
 
@@ -26,6 +27,11 @@ function _valid (node, value, message) {
 export function runConfigs (dag, keyValuePairs) {
   setConfigs(dag, keyValuePairs)
   runSelected(dag, [])
+}
+
+// Returns an array of result run indices that satisfy the input node-value pair specs
+export function runIndices (dag, inputNodeValuePairs) {
+  return Store.runIndices(dag, _refVals(dag, inputNodeValuePairs, 'runIndices'))
 }
 
 // Adds the values of zero or more Nodes to the Input Set

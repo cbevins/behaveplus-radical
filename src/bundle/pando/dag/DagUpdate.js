@@ -1,7 +1,4 @@
-// Stores current value of all selected Nodes
-function storeValues (dag) {
-  dag.results.map.forEach((runs, node) => runs.push(node.value))
-}
+import { storeValues } from './DagStore.js'
 
 export function update (dag) {
   // Initialize Dag results Map with an entry for each Input and Selected Node

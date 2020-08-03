@@ -7,6 +7,7 @@
  * coverage-20200506
  */
 import * as Client from './DagSetRun.js'
+import * as Store from './DagStore.js'
 
 export class Node {
   constructor (nodeIdx, nodeKey, variantRef) {
@@ -143,11 +144,17 @@ export class DagDna {
   // Sets the value of zero or more Config Nodes, then resets the DAG topology and Required Set
   runConfigs (keyValuePairs) { return Client.runConfigs(this, keyValuePairs) }
 
-  // Sets the value of zero or more Config Nodes, then resets the Required Set and node values
-  runSelected (keyValuePairs) { return Client.runSelected(this, keyValuePairs) }
+  // Returns an array of result run indices that satisfy the input node-value pair specs
+  runIndices (inputNodeValuePairs) { return Client.runIndices(this, inputNodeValuePairs) }
 
   // Sets the inputs values of zero or more input Nodes AND updates all Dag Node values
   runInputs (keyValuePairs) { return Client.runInputs(this, keyValuePairs) }
+
+  // Sets the value of zero or more Config Nodes, then resets the Required Set and node values
+  runSelected (keyValuePairs) { return Client.runSelected(this, keyValuePairs) }
+
+  // Returns the Node's result value for the specified run index
+  runValue (nodeRefOrKey, runIdx) { return Store.runValue(this, this.get(nodeRefOrKey), runIdx) }
 
   // Returns an array of references to all selected Nodes
   selectedNodes () { return Array.from(this.selected) }
