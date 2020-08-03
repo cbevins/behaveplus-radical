@@ -30,7 +30,6 @@ test('1: Head ros', () => {
   // Start with selecting just the head fire spread rate
   dag.clearSelected()
   dag.runConfigs([
-    // ['configure.module', 'fireEllipse'],
     ['link.fireEllipse', 'standAlone'],
     ['configure.fire.firelineIntensity', 'firelineIntensity'],
     ['configure.fire.lengthToWidthRatio', 'lengthToWidthRatio']

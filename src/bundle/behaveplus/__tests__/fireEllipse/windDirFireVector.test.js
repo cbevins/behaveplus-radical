@@ -85,7 +85,6 @@ const psiScorch = SurfaceFire.scorchHeight(psiFli, midflameWind, airTemp)
 test('1: wind.direction - fire.vector combination tests', () => {
   dag.runConfigs([
     // IMPORTANT
-    // ['configure.module', 'fireEllipse'],
     ['link.fireEllipse', 'standAlone'],
     ['configure.wind.direction', ['sourceFromNorth', 'headingFromUpslope', 'upslope'][2]],
     ['configure.fire.vector', ['fromHead', 'fromUpslope', 'fromNorth'][0]],

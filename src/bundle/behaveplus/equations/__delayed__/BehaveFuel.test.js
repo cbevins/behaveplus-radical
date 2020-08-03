@@ -9,7 +9,6 @@ expect.extend({ value, sig })
 const dag = new BpxDag('behave')
 
 dag.runConfigs([
-  ['configure.module', 'surfaceFire'],
   [
     'configure.fuel.primary',
     ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][1]
@@ -107,7 +106,6 @@ test('1 Behave Parms input', () => {
   dag.clearSelected()
 
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][1]
@@ -220,7 +218,6 @@ test('2 Behave estimated cured herb fraction', () => {
   dag.clearSelected()
 
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][1]

@@ -10,7 +10,6 @@ expect.extend({ value, sig })
 const dag = new BpxDag('chaparral')
 
 dag.runConfigs([
-  ['configure.module', 'surfaceFire'],
   [
     'configure.fuel.primary',
     ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][2]

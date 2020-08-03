@@ -8,7 +8,6 @@ expect.extend({ value })
 const dag = new Bpx()
 
 dag.runConfigs([
-  // ['configure.module', 'fireEllipse'],
   ['configure.fire.vector', ['fromHead', 'fromUpslope', 'fromNorth'][0]],
   ['configure.wind.direction', ['sourceFromNorth', 'headingFromUpslope', 'upslope'][1]]
 ])
