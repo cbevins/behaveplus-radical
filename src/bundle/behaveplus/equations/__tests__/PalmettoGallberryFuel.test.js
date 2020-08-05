@@ -9,7 +9,6 @@ expect.extend({ value, sig })
 const dag = new BpxDag('palmettoGallberry')
 
 dag.runConfigs([
-  ['configure.module', 'surfaceFire'],
   [
     'configure.fuel.primary',
     ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][3]
@@ -67,13 +66,12 @@ const catalogKey = dag.get('surface.primary.fuel.model.catalogKey')
 
 test('1 Palmetto-Gallberry library', () => {
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][3]
     ]
   ])
-  expect(dag.get('configure.fuel.primary').value.current).toEqual(
+  expect(dag.get('configure.fuel.primary').value).toEqual(
     'palmettoGallberry'
   )
 
@@ -101,68 +99,67 @@ test('1 Palmetto-Gallberry library', () => {
     [height, 6],
     [basal, 80]
   ])
-  expect(age.value.current).toEqual(10)
-  expect(basal.value.current).toEqual(80)
-  expect(cover.value.current).toEqual(0.5)
-  expect(height.value.current).toEqual(6)
+  expect(age.value).toEqual(10)
+  expect(basal.value).toEqual(80)
+  expect(cover.value).toEqual(0.5)
+  expect(height.value).toEqual(6)
 
   // Calculate derived fuel particle properties
   const d1 =
     -0.00121 +
-    0.00379 * Math.log(age.value.current) +
-    0.00118 * height.value.current * height.value.current
-  expect(deadFineLoad.value.current).toEqual(d1)
+    0.00379 * Math.log(age.value) +
+    0.00118 * height.value * height.value
+  expect(deadFineLoad.value).toEqual(d1)
 
   const d2 = Math.max(
     0,
     -0.00775 +
-      0.00021 * cover.value.current +
-      0.00007 * age.value.current * age.value.current
+      0.00021 * cover.value +
+      0.00007 * age.value * age.value
   )
-  expect(deadSmallLoad.value.current).toEqual(d2)
+  expect(deadSmallLoad.value).toEqual(d2)
 
   const dfol =
     0.00221 *
-    Math.pow(age.value.current, 0.51263) *
-    Math.exp(0.02482 * cover.value.current)
-  expect(deadFoliageLoad.value.current).toEqual(dfol)
+    Math.pow(age.value, 0.51263) *
+    Math.exp(0.02482 * cover.value)
+  expect(deadFoliageLoad.value).toEqual(dfol)
 
   const dlit =
-    (0.03632 + 0.0005336 * basal.value.current) *
-    (1.0 - Math.pow(0.25, age.value.current))
-  expect(deadLitterLoad.value.current).toEqual(dlit)
+    (0.03632 + 0.0005336 * basal.value) *
+    (1.0 - Math.pow(0.25, age.value))
+  expect(deadLitterLoad.value).toEqual(dlit)
 
   const lfol =
     -0.0036 +
-    0.00253 * age.value.current +
-    0.00049 * cover.value.current +
-    0.00282 * height.value.current * height.value.current
-  expect(liveFoliageLoad.value.current).toEqual(lfol)
+    0.00253 * age.value +
+    0.00049 * cover.value +
+    0.00282 * height.value * height.value
+  expect(liveFoliageLoad.value).toEqual(lfol)
 
   const l1 =
     0.00546 +
-    0.00092 * age.value.current +
-    0.00212 * height.value.current * height.value.current
-  expect(liveFineLoad.value.current).toEqual(l1)
+    0.00092 * age.value +
+    0.00212 * height.value * height.value
+  expect(liveFineLoad.value).toEqual(l1)
 
   const l2 =
     -0.02128 +
-    0.00014 * age.value.current * age.value.current +
-    0.00314 * height.value.current * height.value.current
-  expect(liveSmallLoad.value.current).toEqual(l2)
+    0.00014 * age.value * age.value +
+    0.00314 * height.value * height.value
+  expect(liveSmallLoad.value).toEqual(l2)
 
-  expect(depth.value.current).toEqual((2 * height.value.current) / 3)
+  expect(depth.value).toEqual((2 * height.value) / 3)
 })
 
 test('2 Palmetto-Gallberry constants', () => {
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][3]
     ]
   ])
-  expect(dag.get('configure.fuel.primary').value.current).toEqual(
+  expect(dag.get('configure.fuel.primary').value).toEqual(
     'palmettoGallberry'
   )
 
@@ -289,20 +286,19 @@ test('2 Palmetto-Gallberry constants', () => {
   dag.runSelected(data.map(node => [node[0], true]))
   data.forEach(datum => {
     const [key, value] = datum
-    expect(dag.get(key).value.current).sig(value, 10, key)
+    expect(dag.get(key).value).sig(value, 10, key)
   })
 })
 
 test('3 Palmetto-Gallberry catalog', () => {
   dag.clearSelected()
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][0]
     ]
   ])
-  expect(dag.get('configure.fuel.primary').value.current).toEqual('catalog')
+  expect(dag.get('configure.fuel.primary').value).toEqual('catalog')
 
   dag.runSelected([
     [depth, true],
@@ -320,55 +316,55 @@ test('3 Palmetto-Gallberry catalog', () => {
   expect(inputNodes).toContain(catalogKey)
   dag.runInputs([[catalogKey, 'pg/age=20/basal=120/cover=.8/height=5']])
 
-  expect(age.value.current).toEqual(20)
-  expect(basal.value.current).toEqual(120)
-  expect(cover.value.current).toEqual(0.8)
-  expect(height.value.current).toEqual(5)
+  expect(age.value).toEqual(20)
+  expect(basal.value).toEqual(120)
+  expect(cover.value).toEqual(0.8)
+  expect(height.value).toEqual(5)
 
   // Calculate derived fuel particle properties
   const d1 =
     -0.00121 +
-    0.00379 * Math.log(age.value.current) +
-    0.00118 * height.value.current * height.value.current
-  expect(deadFineLoad.value.current).toEqual(d1)
+    0.00379 * Math.log(age.value) +
+    0.00118 * height.value * height.value
+  expect(deadFineLoad.value).toEqual(d1)
 
   const d2 = Math.max(
     0,
     -0.00775 +
-      0.00021 * cover.value.current +
-      0.00007 * age.value.current * age.value.current
+      0.00021 * cover.value +
+      0.00007 * age.value * age.value
   )
-  expect(deadSmallLoad.value.current).toEqual(d2)
+  expect(deadSmallLoad.value).toEqual(d2)
 
   const dfol =
     0.00221 *
-    Math.pow(age.value.current, 0.51263) *
-    Math.exp(0.02482 * cover.value.current)
-  expect(deadFoliageLoad.value.current).toEqual(dfol)
+    Math.pow(age.value, 0.51263) *
+    Math.exp(0.02482 * cover.value)
+  expect(deadFoliageLoad.value).toEqual(dfol)
 
   const dlit =
-    (0.03632 + 0.0005336 * basal.value.current) *
-    (1.0 - Math.pow(0.25, age.value.current))
-  expect(deadLitterLoad.value.current).toEqual(dlit)
+    (0.03632 + 0.0005336 * basal.value) *
+    (1.0 - Math.pow(0.25, age.value))
+  expect(deadLitterLoad.value).toEqual(dlit)
 
   const lfol =
     -0.0036 +
-    0.00253 * age.value.current +
-    0.00049 * cover.value.current +
-    0.00282 * height.value.current * height.value.current
-  expect(liveFoliageLoad.value.current).toEqual(lfol)
+    0.00253 * age.value +
+    0.00049 * cover.value +
+    0.00282 * height.value * height.value
+  expect(liveFoliageLoad.value).toEqual(lfol)
 
   const l1 =
     0.00546 +
-    0.00092 * age.value.current +
-    0.00212 * height.value.current * height.value.current
-  expect(liveFineLoad.value.current).toEqual(l1)
+    0.00092 * age.value +
+    0.00212 * height.value * height.value
+  expect(liveFineLoad.value).toEqual(l1)
 
   const l2 =
     -0.02128 +
-    0.00014 * age.value.current * age.value.current +
-    0.00314 * height.value.current * height.value.current
-  expect(liveSmallLoad.value.current).toEqual(l2)
+    0.00014 * age.value * age.value +
+    0.00314 * height.value * height.value
+  expect(liveSmallLoad.value).toEqual(l2)
 
-  expect(depth.value.current).toEqual((2 * height.value.current) / 3)
+  expect(depth.value).toEqual((2 * height.value) / 3)
 })

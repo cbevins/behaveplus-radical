@@ -22,15 +22,15 @@ When receiving a Quantity variant input amount from the client, first convert it
 ```js
 const clientInputAmount = 1.23
 const clientDisplayUnits = 'ton/ac'
-node.value.current = Uom.baseAmount(clientInputAmount, clientDisplayUnits)
+node.value = Uom.baseAmount(clientInputAmount, clientDisplayUnits)
 ```
 
 When displaying a Quantity variant value to the client, convert it from the Node's Quantity base value into the client's display/output units-of-measure via:
 
 ```js
-node.value.current = 1.234
+node.value = 1.234
 const clientDisplayUnits = 'ton/ac'
-const clientDisplayAmount = Uom.asAmount(node.value.current, clientDisplayUnits )
+const clientDisplayAmount = Uom.asAmount(node.value, clientDisplayUnits )
 ```
 
 ---

@@ -9,7 +9,6 @@ expect.extend({ value, sig })
 const dag = new BpxDag('fuelParticle')
 
 dag.runConfigs([
-  ['configure.module', 'surfaceFire'],
   [
     'configure.fuel.primary',
     ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][0]
@@ -55,7 +54,7 @@ const volm = dag.get('surface.primary.fuel.bed.dead.particle.class1.volume')
 const catalogKey = dag.get('surface.primary.fuel.model.catalogKey')
 
 test('1: sizeClass() tests for full code coverage', () => {
-  expect(dag.get('configure.fuel.primary').value.current).toEqual('catalog')
+  expect(dag.get('configure.fuel.primary').value).toEqual('catalog')
 
   dag.runSelected([
     // [diam, true],
@@ -72,9 +71,9 @@ test('1: sizeClass() tests for full code coverage', () => {
 
   dag.runInputs([[catalogKey, '10']])
   let diameter = 4 / 2000
-  // expect(diam.value.current).toEqual(diameter)
+  // expect(diam.value).toEqual(diameter)
   let volume = 0.138 / 32
-  expect(volm.value.current).toEqual(volume)
+  expect(volm.value).toEqual(volume)
 
   // FM 10 10-h
   diameter = 4 / 192 // 0.02083333 ft, 0.25 in

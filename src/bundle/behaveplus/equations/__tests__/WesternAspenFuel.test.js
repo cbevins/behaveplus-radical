@@ -10,7 +10,6 @@ expect.extend({ value, sig })
 const dag = new BpxDag('westernAspen')
 
 dag.runConfigs([
-  ['configure.module', 'surfaceFire'],
   [
     'configure.fuel.primary',
     ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][4]
@@ -128,13 +127,12 @@ const ppsf = 2000 / 43560
 test('1 Western Aspen fuel library - Table', () => {
   dag.clearSelected()
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][4]
     ]
   ])
-  expect(dag.get('configure.fuel.primary').value.current).toEqual(
+  expect(dag.get('configure.fuel.primary').value).toEqual(
     'westernAspen'
   )
 
@@ -155,37 +153,37 @@ test('1 Western Aspen fuel library - Table', () => {
         [type, key],
         [curingLevel, level]
       ])
-      expect(depth.value.current).sig(
+      expect(depth.value).sig(
         aspen[0][1][idx],
         12,
         `${key} ${depth.node.key} ${level}`
       )
-      expect(dead1Load.value.current).sig(
+      expect(dead1Load.value).sig(
         ppsf * aspen[1][1][idx],
         12,
         `${key} ${dead1Load.node.key} ${level}`
       )
-      expect(dead1Savr.value.current).sig(
+      expect(dead1Savr.value).sig(
         aspen[2][1][idx],
         12,
         `${key} ${dead1Savr.node.key} ${level}`
       )
-      expect(dead10Load.value.current).sig(
+      expect(dead10Load.value).sig(
         ppsf * aspen[3][1][idx],
         12,
         `${key} ${dead10Load.node.key} ${level}`
       )
-      expect(liveHerbLoad.value.current).sig(
+      expect(liveHerbLoad.value).sig(
         ppsf * aspen[4][1][idx],
         12,
         `${key} ${liveHerbLoad.node.key} ${level}`
       )
-      expect(liveStemLoad.value.current).sig(
+      expect(liveStemLoad.value).sig(
         ppsf * aspen[5][1][idx],
         12,
         `${key} ${liveStemLoad.node.key} ${level}`
       )
-      expect(liveStemSavr.value.current).sig(
+      expect(liveStemSavr.value).sig(
         aspen[6][1][idx],
         12,
         `${key} ${liveStemSavr.node.key} ${level}`
@@ -197,7 +195,6 @@ test('1 Western Aspen fuel library - Table', () => {
 test('2 Western Aspen constants', () => {
   ;['primary', 'secondary'].forEach(fuel => {
     dag.runConfigs([
-      ['configure.module', 'surfaceFire'],
       [
         `configure.fuel.${fuel}`,
         [
@@ -209,7 +206,7 @@ test('2 Western Aspen constants', () => {
         ][4]
       ]
     ])
-    expect(dag.get(`configure.fuel.${fuel}`).value.current).toEqual(
+    expect(dag.get(`configure.fuel.${fuel}`).value).toEqual(
       'westernAspen'
     )
 
@@ -283,7 +280,7 @@ test('2 Western Aspen constants', () => {
     dag.runSelected(data.map(node => [node[0], true]))
     data.forEach(datum => {
       const [key, value] = datum
-      expect(dag.get(key).value.current).sig(value, 10, key)
+      expect(dag.get(key).value).sig(value, 10, key)
     })
   })
 })
@@ -291,13 +288,12 @@ test('2 Western Aspen constants', () => {
 test('3 Western Aspen interpolation', () => {
   dag.clearSelected()
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][4]
     ]
   ])
-  expect(dag.get('configure.fuel.primary').value.current).toEqual(
+  expect(dag.get('configure.fuel.primary').value).toEqual(
     'westernAspen'
   )
 
@@ -314,31 +310,30 @@ test('3 Western Aspen interpolation', () => {
     [type, 'aspenShrub'],
     [curingLevel, 0.4]
   ])
-  expect(dead1Load.value.current).toEqual(ppsf * d1l40)
+  expect(dead1Load.value).toEqual(ppsf * d1l40)
 
   dag.runInputs([
     [type, 'aspenShrub'],
     [curingLevel, -1]
   ])
-  expect(dead1Load.value.current).toEqual(ppsf * 0.8)
+  expect(dead1Load.value).toEqual(ppsf * 0.8)
 
   dag.runInputs([
     [type, 'aspenShrub'],
     [curingLevel, 2]
   ])
-  expect(dead1Load.value.current).toEqual(ppsf * 1.4595)
+  expect(dead1Load.value).toEqual(ppsf * 1.4595)
 })
 
 test('4 Western Aspen catalog', () => {
   dag.clearSelected()
   dag.runConfigs([
-    ['configure.module', 'surfaceFire'],
     [
       'configure.fuel.primary',
       ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][0]
     ]
   ])
-  expect(dag.get('configure.fuel.primary').value.current).toEqual('catalog')
+  expect(dag.get('configure.fuel.primary').value).toEqual('catalog')
 
   dag.runSelected(aspenShrub.map(node => [node[0], true]))
   const inputNodes = dag.requiredInputNodes()
@@ -346,15 +341,15 @@ test('4 Western Aspen catalog', () => {
   expect(inputNodes).toContain(catalogKey)
   dag.runInputs([[catalogKey, 'aspenShrub50']])
 
-  expect(type.value.current).toEqual('aspenShrub')
-  expect(curingLevel.value.current).toEqual(0.5)
-  expect(depth.value.current).toEqual(0.65)
-  expect(dead1Load.value.current).toEqual(ppsf * 1.056)
-  expect(dead1Savr.value.current).toEqual(1910)
-  expect(dead10Load.value.current).toEqual(ppsf * 0.975)
-  expect(liveHerbLoad.value.current).toEqual(ppsf * 0.167)
-  expect(liveStemLoad.value.current).toEqual(ppsf * 0.333)
-  expect(liveStemSavr.value.current).toEqual(2310)
+  expect(type.value).toEqual('aspenShrub')
+  expect(curingLevel.value).toEqual(0.5)
+  expect(depth.value).toEqual(0.65)
+  expect(dead1Load.value).toEqual(ppsf * 1.056)
+  expect(dead1Savr.value).toEqual(1910)
+  expect(dead10Load.value).toEqual(ppsf * 0.975)
+  expect(liveHerbLoad.value).toEqual(ppsf * 0.167)
+  expect(liveStemLoad.value).toEqual(ppsf * 0.333)
+  expect(liveStemSavr.value).toEqual(2310)
 })
 
 test('Coverage', () => {
