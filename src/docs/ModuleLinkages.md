@@ -43,19 +43,19 @@ There are 7 possible linkages where a client Module binds one or more of its inp
   - Tree Mortality binds to Scorch Height (`configure.link.treeMortality = 'linkedToScorchHeight'`) to obtain:
     - scorch height
 
-Surface Fire can be linked to 4 other modules:
-  - Crown Fire
+Surface Fire can be linked (provide input) to 4 other modules:
+  - Crown Fire can use Surface Fire
     - surface fireline intensity (or flame length)
     - surface fire heat per unit area
-  - Surface Spotting
+  - Surface Spotting can use Surface Fire
     - surface fireline intensity (or flame length)
-  - Fire Ellipse
+  - Fire Ellipse can use Surface Fire
     - surface fireline intensity (or flame length)
     - surface fire spread rate
     - fire heading direction from upslope
     - surface fire length-to-width-ratio (or effective wind speed)
     - wind speed at midflame height
-  - Scorch Height
+  - Scorch Height can use Surface Fire
     - surface fireline intensity (or flame length)
     - wind speed at midflame height
 

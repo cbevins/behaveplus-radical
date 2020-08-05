@@ -48,12 +48,13 @@ export function updateCasewise (dag) {
     saved.set(node, [...dag.input.get(node)])
     maxCases = Math.max(maxCases, saved.get(node).length)
   })
+  dag.stack = dag.requiredUpdateNodes()
   // Process each case with single input values
   for (let caseIdx = 0; caseIdx < maxCases; caseIdx += 1) {
     inputNodes.forEach(node => {
       const inputs = saved.get(node)
       const useIdx = Math.min(caseIdx, inputs.length - 1)
-      dag.input.set(node, inputs[useIdx])
+      dag.input.set(node, [inputs[useIdx]])
     })
     updateRecursive(dag, 0)
   }
