@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Bpx } from '../../Bpx.js'
 import * as DagJest from '../../../../utils/matchers.js'
-import { configDefault } from '../testData.js'
 
 const value = DagJest.value
 expect.extend({ value })
