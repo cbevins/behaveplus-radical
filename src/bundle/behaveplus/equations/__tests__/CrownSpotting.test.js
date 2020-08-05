@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, no-unused-vars, no-prototype-builtins */
+import * as DagJest from '../../../../utils/matchers.js'
 import { CrownSpotting } from '../index.js'
 
-import * as DagJest from '../../utils/matchers.js'
 const sig = DagJest.sig
 const value = DagJest.value
 expect.extend({ value, sig })
@@ -125,11 +125,7 @@ test('4: DIST2a & BP6 - Wind Speed Series', () => {
   ;[10, 20, 40, 60, 100, 0].forEach((uan, idx) => {
     const utop = CrownSpotting.windSpeedAtCanopyTop(htop, uan, anem)
     const [z, x, drift, spot, layer] = CrownSpotting.dist(
-      htop,
-      fikwpm,
-      utop,
-      diam
-    )
+      htop, fikwpm, utop, diam)
     expect(layer).toEqual(layers[idx])
     expect(spot).sig(dist[idx], 5)
     expect(z).sig(ht[idx], 4)
