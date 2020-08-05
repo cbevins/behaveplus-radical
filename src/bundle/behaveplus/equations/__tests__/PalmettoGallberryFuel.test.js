@@ -1,52 +1,14 @@
 /* eslint-disable no-unused-vars */
-import { BpxDag } from '../../behaveplus/BpxDag.js'
-import * as DagJest from '../../utils/matchers.js'
+import { Bpx } from '../../Bpx.js'
+import * as DagJest from '../../../../utils/matchers.js'
 
-const sig = DagJest.sig
 const value = DagJest.value
-expect.extend({ value, sig })
+const sig = DagJest.sig
+expect.extend({ sig, value })
 
-const dag = new BpxDag('palmettoGallberry')
+const dag = new Bpx()
 
-dag.runConfigs([
-  [
-    'configure.fuel.primary',
-    ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][3]
-  ],
-  // NOT AS IMPORTANT
-  [
-    'configure.fuel.moisture',
-    ['individual', 'liveCategory', 'category', 'catalog'][0]
-  ],
-  [
-    'configure.wind.direction',
-    ['sourceFromNorth', 'headingFromUpslope', 'upslope'][1]
-  ],
-  ['configure.wind.speed', ['at10m', 'at20ft', 'atMidflame'][1]],
-  ['configure.fuel.windSpeedAdjustmentFactor', ['input', 'estimated'][0]],
-  ['configure.fire.firelineIntensity', ['firelineIntensity', 'flameLength'][1]],
-  ['configure.fire.vector', ['fromHead', 'fromUpslope', 'fromNorth'][0]],
-  [
-    'configure.fire.lengthToWidthRatio',
-    ['lengthToWidthRatio', 'effectiveWindSpeed'][0]
-  ],
-  ['configure.fire.effectiveWindSpeedLimit', ['applied', 'ignored'][0]],
-  ['configure.fire.weightingMethod', ['arithmetic', 'expected', 'harmonic'][2]],
-  ['configure.fuel.chaparralTotalLoad', ['input', 'estimated'][0]],
-  ['configure.fuel.curedHerbFraction', ['input', 'estimated'][1]],
-  [
-    'configure.fuel.secondary',
-    [
-      'none',
-      'catalog',
-      'behave',
-      'chaparral',
-      'palmettoGallberry',
-      'westernAspen'
-    ][0]
-  ],
-  ['configure.slope.steepness', ['ratio', 'degrees', 'map'][0]]
-])
+dag.runConfigs([['configure.fuel.primary', 'palmettoGallberry']])
 
 const parms = 'surface.primary.fuel.model.palmettoGallberry.parms.'
 const age = dag.get(parms + 'age')
@@ -65,15 +27,8 @@ const liveFoliageLoad = dag.get(derived + 'liveFoliageLoad')
 const catalogKey = dag.get('surface.primary.fuel.model.catalogKey')
 
 test('1 Palmetto-Gallberry library', () => {
-  dag.runConfigs([
-    [
-      'configure.fuel.primary',
-      ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][3]
-    ]
-  ])
-  expect(dag.get('configure.fuel.primary').value).toEqual(
-    'palmettoGallberry'
-  )
+  dag.runConfigs([['configure.fuel.primary', 'palmettoGallberry']])
+  expect(dag.get('configure.fuel.primary').value).toEqual('palmettoGallberry')
 
   dag.runSelected([
     [depth, true],
@@ -111,8 +66,7 @@ test('1 Palmetto-Gallberry library', () => {
     0.00118 * height.value * height.value
   expect(deadFineLoad.value).toEqual(d1)
 
-  const d2 = Math.max(
-    0,
+  const d2 = Math.max(0,
     -0.00775 +
       0.00021 * cover.value +
       0.00007 * age.value * age.value
@@ -152,16 +106,9 @@ test('1 Palmetto-Gallberry library', () => {
   expect(depth.value).toEqual((2 * height.value) / 3)
 })
 
-test('2 Palmetto-Gallberry constants', () => {
-  dag.runConfigs([
-    [
-      'configure.fuel.primary',
-      ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][3]
-    ]
-  ])
-  expect(dag.get('configure.fuel.primary').value).toEqual(
-    'palmettoGallberry'
-  )
+test('2: Palmetto-Gallberry constants', () => {
+  dag.runConfigs([['configure.fuel.primary', 'palmettoGallberry']])
+  expect(dag.get('configure.fuel.primary').value).toEqual('palmettoGallberry')
 
   //      heat dens stot  seff    Foliage savr = 2000
   // Live 8300   46 0.03 0.015    0-0.25  savr = 350
@@ -171,116 +118,53 @@ test('2 Palmetto-Gallberry constants', () => {
     ['surface.primary.fuel.bed.dead.extinction.moistureContent', 0.4],
 
     // ['surface.primary.fuel.bed.dead.particle.class1.label', 'Dead 1-h time-lag (0 to 0.25 inch diameter) stem wood'],
-    [
-      'surface.primary.fuel.bed.dead.particle.class1.surfaceAreaToVolumeRatio',
-      350
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class1.surfaceAreaToVolumeRatio', 350],
     ['surface.primary.fuel.bed.dead.particle.class1.heatOfCombustion', 8300],
     ['surface.primary.fuel.bed.dead.particle.class1.fiberDensity', 30],
-    [
-      'surface.primary.fuel.bed.dead.particle.class1.effective.mineralContent',
-      0.01
-    ],
-    [
-      'surface.primary.fuel.bed.dead.particle.class1.total.mineralContent',
-      0.03
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class1.effective.mineralContent', 0.01],
+    ['surface.primary.fuel.bed.dead.particle.class1.total.mineralContent', 0.03],
 
     // ['surface.primary.fuel.bed.dead.particle.class2.label', 'Dead 10-h time-lag (0.25 to 1 inch diameter) stem wood'],
-    [
-      'surface.primary.fuel.bed.dead.particle.class2.surfaceAreaToVolumeRatio',
-      140
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class2.surfaceAreaToVolumeRatio', 140],
     ['surface.primary.fuel.bed.dead.particle.class2.heatOfCombustion', 8300],
     ['surface.primary.fuel.bed.dead.particle.class2.fiberDensity', 30],
-    [
-      'surface.primary.fuel.bed.dead.particle.class2.effective.mineralContent',
-      0.01
-    ],
-    [
-      'surface.primary.fuel.bed.dead.particle.class2.total.mineralContent',
-      0.03
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class2.effective.mineralContent', 0.01],
+    ['surface.primary.fuel.bed.dead.particle.class2.total.mineralContent', 0.03],
 
     // ['surface.primary.fuel.bed.dead.particle.class3.label', 'Dead foliage'],
-    [
-      'surface.primary.fuel.bed.dead.particle.class3.surfaceAreaToVolumeRatio',
-      2000
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class3.surfaceAreaToVolumeRatio', 2000],
     ['surface.primary.fuel.bed.dead.particle.class3.heatOfCombustion', 8300],
     ['surface.primary.fuel.bed.dead.particle.class3.fiberDensity', 30],
-    [
-      'surface.primary.fuel.bed.dead.particle.class3.effective.mineralContent',
-      0.01
-    ],
-    [
-      'surface.primary.fuel.bed.dead.particle.class3.total.mineralContent',
-      0.03
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class3.effective.mineralContent', 0.01],
+    ['surface.primary.fuel.bed.dead.particle.class3.total.mineralContent', 0.03],
 
     // ['surface.primary.fuel.bed.dead.particle.class4.label', 'Litter layer'],
-    [
-      'surface.primary.fuel.bed.dead.particle.class4.surfaceAreaToVolumeRatio',
-      2000
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class4.surfaceAreaToVolumeRatio', 2000],
     ['surface.primary.fuel.bed.dead.particle.class4.heatOfCombustion', 8300],
     ['surface.primary.fuel.bed.dead.particle.class4.fiberDensity', 30],
-    [
-      'surface.primary.fuel.bed.dead.particle.class4.effective.mineralContent',
-      0.01
-    ],
-    [
-      'surface.primary.fuel.bed.dead.particle.class4.total.mineralContent',
-      0.03
-    ],
+    ['surface.primary.fuel.bed.dead.particle.class4.effective.mineralContent', 0.01],
+    ['surface.primary.fuel.bed.dead.particle.class4.total.mineralContent', 0.03],
 
     // ['surface.primary.fuel.bed.live.particle.class1.label', 'Live 0 to 0.25 inch diameter stem wood'],
-    [
-      'surface.primary.fuel.bed.live.particle.class1.surfaceAreaToVolumeRatio',
-      350
-    ],
+    ['surface.primary.fuel.bed.live.particle.class1.surfaceAreaToVolumeRatio', 350],
     ['surface.primary.fuel.bed.live.particle.class1.heatOfCombustion', 8300],
     ['surface.primary.fuel.bed.live.particle.class1.fiberDensity', 46],
-    [
-      'surface.primary.fuel.bed.live.particle.class1.effective.mineralContent',
-      0.015
-    ],
-    [
-      'surface.primary.fuel.bed.live.particle.class1.total.mineralContent',
-      0.03
-    ],
+    ['surface.primary.fuel.bed.live.particle.class1.effective.mineralContent', 0.015],
+    ['surface.primary.fuel.bed.live.particle.class1.total.mineralContent', 0.03],
 
     // ['surface.primary.fuel.bed.live.particle.class2.label', 'Live 0.25 to 1 inch diameter stem wood'],
-    [
-      'surface.primary.fuel.bed.live.particle.class2.surfaceAreaToVolumeRatio',
-      140
-    ],
+    ['surface.primary.fuel.bed.live.particle.class2.surfaceAreaToVolumeRatio', 140],
     ['surface.primary.fuel.bed.live.particle.class2.heatOfCombustion', 8300],
     ['surface.primary.fuel.bed.live.particle.class2.fiberDensity', 46],
-    [
-      'surface.primary.fuel.bed.live.particle.class2.effective.mineralContent',
-      0.015
-    ],
-    [
-      'surface.primary.fuel.bed.live.particle.class2.total.mineralContent',
-      0.03
-    ],
+    ['surface.primary.fuel.bed.live.particle.class2.effective.mineralContent', 0.015],
+    ['surface.primary.fuel.bed.live.particle.class2.total.mineralContent', 0.03],
 
     // ['surface.primary.fuel.bed.live.particle.class3.label', 'Live foliage'],
     ['surface.primary.fuel.bed.live.particle.class3.heatOfCombustion', 8300],
     ['surface.primary.fuel.bed.live.particle.class3.fiberDensity', 46],
-    [
-      'surface.primary.fuel.bed.live.particle.class3.effective.mineralContent',
-      0.015
-    ],
-    [
-      'surface.primary.fuel.bed.live.particle.class3.total.mineralContent',
-      0.03
-    ],
-    [
-      'surface.primary.fuel.bed.live.particle.class3.surfaceAreaToVolumeRatio',
-      2000
-    ]
+    ['surface.primary.fuel.bed.live.particle.class3.effective.mineralContent', 0.015],
+    ['surface.primary.fuel.bed.live.particle.class3.total.mineralContent', 0.03],
+    ['surface.primary.fuel.bed.live.particle.class3.surfaceAreaToVolumeRatio', 2000]
   ]
 
   dag.runSelected(data.map(node => [node[0], true]))
@@ -290,14 +174,9 @@ test('2 Palmetto-Gallberry constants', () => {
   })
 })
 
-test('3 Palmetto-Gallberry catalog', () => {
+test('3: Palmetto-Gallberry catalog', () => {
   dag.clearSelected()
-  dag.runConfigs([
-    [
-      'configure.fuel.primary',
-      ['catalog', 'behave', 'chaparral', 'palmettoGallberry', 'westernAspen'][0]
-    ]
-  ])
+  dag.runConfigs([['configure.fuel.primary', 'catalog']])
   expect(dag.get('configure.fuel.primary').value).toEqual('catalog')
 
   dag.runSelected([

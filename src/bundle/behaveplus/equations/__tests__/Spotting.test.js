@@ -1,10 +1,10 @@
 /* eslint-disable no-undef, no-unused-vars, no-prototype-builtins */
+import * as DagJest from '../../../../utils/matchers.js'
 import { Spotting, SurfaceFire } from '../index.js'
 
-import * as DagJest from '../../utils/matchers.js'
-const sig = DagJest.sig
 const value = DagJest.value
-expect.extend({ value, sig })
+const sig = DagJest.sig
+expect.extend({ sig, value })
 
 const booleans = [true, false] //
 const locations = [
@@ -34,39 +34,21 @@ test('1: Burning pile', () => {
   // open, closed downwind canopy
   booleans.forEach((openCanopy, idx) => {
     const appliedCoverHt = Spotting.appliedDownWindCoverHeight(coverHt, openCanopy)
-    expect(appliedCoverHt).sig(
-      expectAppliedCoverHt[idx],
-      6,
-      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`
-    )
+    expect(appliedCoverHt).sig(expectAppliedCoverHt[idx], 6,
+      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`)
 
     const criticalCoverHeight = Spotting.surfaceFirecriticalCoverHeight(
-      firebrandHt,
-      appliedCoverHt
-    )
+      firebrandHt, appliedCoverHt)
     const flatDist = Spotting.distanceFlatTerrain(
-      firebrandHt,
-      criticalCoverHeight,
-      u20
-    )
-    expect(flatDist).sig(
-      expectFlatDist[idx],
-      6,
-      `distanceFlatTerrain(${firebrandHt}, ${criticalCoverHeight}, ${u20})`
-    )
+      firebrandHt, criticalCoverHeight, u20)
+    expect(flatDist).sig(expectFlatDist[idx], 6,
+      `distanceFlatTerrain(${firebrandHt}, ${criticalCoverHeight}, ${u20})`)
 
     locations.forEach((location, idx2) => {
       const mtnDist = Spotting.distanceMountainTerrain(
-        flatDist,
-        location,
-        rvDist,
-        rvElev
-      )
-      expect(mtnDist).sig(
-        expectMtnDist[idx][idx2],
-        6,
-        `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`
-      )
+        flatDist, location, rvDist, rvElev)
+      expect(mtnDist).sig(expectMtnDist[idx][idx2], 6,
+        `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`)
     })
   })
 })
@@ -81,18 +63,10 @@ test('2: Surface fire', () => {
   const fli = SurfaceFire.firelineIntensityFromFlameLength(flameLength)
 
   const firebrandHt = Spotting.surfaceFireFirebrandHeight(fli, u20)
-  expect(firebrandHt).sig(
-    176.925987,
-    8,
-    `surfaceFireFirebrandHeight(${fli}, ${u20})`
-  )
+  expect(firebrandHt).sig(176.925987, 8, `surfaceFireFirebrandHeight(${fli}, ${u20})`)
 
   const firebrandDrift = Spotting.surfaceFireFirebrandDrift(firebrandHt, u20)
-  expect(firebrandDrift).sig(
-    818.537781,
-    6,
-    `surfaceFireFirebrandDrift(${firebrandHt}, ${u20})`
-  )
+  expect(firebrandDrift).sig(818.537781, 6, `surfaceFireFirebrandDrift(${firebrandHt}, ${u20})`)
 
   const expectAppliedCoverHt = [50, 100]
   const expectFlatDist = [1649.855439, 1380.720097]
@@ -104,44 +78,24 @@ test('2: Surface fire', () => {
   // open, closed downwind canopy
   booleans.forEach((openCanopy, idx) => {
     const appliedCoverHt = Spotting.appliedDownWindCoverHeight(coverHt, openCanopy)
-    expect(appliedCoverHt).sig(
-      expectAppliedCoverHt[idx],
-      6,
-      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`
-    )
+    expect(appliedCoverHt).sig(expectAppliedCoverHt[idx], 6,
+      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`)
 
     const criticalCoverHeight = Spotting.surfaceFirecriticalCoverHeight(
-      firebrandHt,
-      appliedCoverHt
-    )
+      firebrandHt, appliedCoverHt)
 
     const flatDist = Spotting.distanceFlatTerrain(
-      firebrandHt,
-      criticalCoverHeight,
-      u20
-    )
+      firebrandHt, criticalCoverHeight, u20)
     const flatDistWithDrift = Spotting.distanceFlatTerrainWithDrift(
-      flatDist,
-      firebrandDrift
-    )
-    expect(flatDistWithDrift).sig(
-      expectFlatDist[idx],
-      6,
-      `distanceFlatTerrainWithDrift[${flatDist}, ${firebrandDrift})`
-    )
+      flatDist, firebrandDrift)
+    expect(flatDistWithDrift).sig(expectFlatDist[idx], 6,
+      `distanceFlatTerrainWithDrift[${flatDist}, ${firebrandDrift})`)
 
     locations.forEach((location, idx2) => {
       const mtnDist = Spotting.distanceMountainTerrain(
-        flatDistWithDrift,
-        location,
-        rvDist,
-        rvElev
-      )
-      expect(mtnDist).sig(
-        expectMtnDist[idx][idx2],
-        6,
-        `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`
-      )
+        flatDistWithDrift, location, rvDist, rvElev)
+      expect(mtnDist).sig(expectMtnDist[idx][idx2], 6,
+        `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`)
     })
   })
 })
@@ -157,20 +111,14 @@ test('3: Torching trees', () => {
   const rvDist = 5280 // mi
 
   const flameDur = Spotting.torchingTreesSteadyFlameDuration(
-    species,
-    dbh,
-    trees
-  )
+    species, dbh, trees)
   expect(flameDur).sig(3.551806, 6, 'torchingTreesSteadyFlameDuration')
 
   const flameHt = Spotting.torchingTreesSteadyFlameHeight(species, dbh, trees)
   expect(flameHt).sig(130.590291, 6, 'torchingTreesSteadyFlameHeight')
 
   const firebrandHt = Spotting.torchingTreesFirebrandHeight(
-    treeHt,
-    flameHt,
-    flameDur
-  )
+    treeHt, flameHt, flameDur)
   expect(firebrandHt).sig(830.257413, 6, 'torchingTreesFirebrandHeight')
 
   const expectAppliedCoverHt = [50, 100]
@@ -183,27 +131,16 @@ test('3: Torching trees', () => {
   // open, closed downwind canopy
   booleans.forEach((openCanopy, idx) => {
     const appliedCoverHt = Spotting.appliedDownWindCoverHeight(coverHt, openCanopy)
-    expect(appliedCoverHt).sig(
-      expectAppliedCoverHt[idx],
-      6,
-      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`
-    )
+    expect(appliedCoverHt).sig(expectAppliedCoverHt[idx], 6,
+      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`)
 
     const criticalCoverHeight = Spotting.surfaceFirecriticalCoverHeight(
-      firebrandHt,
-      appliedCoverHt
-    )
+      firebrandHt, appliedCoverHt)
 
     const flatDist = Spotting.distanceFlatTerrain(
-      firebrandHt,
-      criticalCoverHeight,
-      u20
-    )
-    expect(flatDist).sig(
-      expectFlatDist[idx],
-      6,
-      `distanceFlatTerrain(${firebrandHt}, ${criticalCoverHeight}, ${u20})`
-    )
+      firebrandHt, criticalCoverHeight, u20)
+    expect(flatDist).sig(expectFlatDist[idx], 6,
+      `distanceFlatTerrain(${firebrandHt}, ${criticalCoverHeight}, ${u20})`)
 
     locations.forEach((location, idx2) => {
       const mtnDist = Spotting.distanceMountainTerrain(
@@ -212,11 +149,8 @@ test('3: Torching trees', () => {
         rvDist,
         rvElev
       )
-      expect(mtnDist).sig(
-        expectMtnDist[idx][idx2],
-        6,
-        `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`
-      )
+      expect(mtnDist).sig(expectMtnDist[idx][idx2], 6,
+        `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`)
     })
   })
 })
@@ -312,56 +246,35 @@ test('4: Torching tree species', () => {
 
   Object.keys(expected).forEach(species => {
     const flameDur = Spotting.torchingTreesSteadyFlameDuration(
-      species,
-      dbh,
-      trees
-    )
+      species, dbh, trees)
     // expect(approx(flameDur, expected[species].flameDur, 6)).toEqual(true)
 
     const flameHt = Spotting.torchingTreesSteadyFlameHeight(species, dbh, trees)
     // expect(approx(flameHt, expected[species].flameHt, 6)).toEqual(true)
 
     const firebrandHt = Spotting.torchingTreesFirebrandHeight(
-      treeHt,
-      flameHt,
-      flameDur
-    )
+      treeHt, flameHt, flameDur)
     // expect(approx(firebrandHt, expected[species].firebrandHt, 6)).toEqual(true)
 
     const appliedCoverHt = Spotting.appliedDownWindCoverHeight(coverHt, openCanopy)
-    expect(appliedCoverHt).sig(
-      expectAppliedCoverHt,
-      6,
-      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`
-    )
+    expect(appliedCoverHt).sig(expectAppliedCoverHt, 6,
+      `appliedDownWindCoverHeight(${coverHt}, ${openCanopy})`)
 
     const criticalCoverHeight = Spotting.surfaceFirecriticalCoverHeight(
-      firebrandHt,
-      appliedCoverHt
-    )
+      firebrandHt, appliedCoverHt)
 
     const flatDist = Spotting.distanceFlatTerrain(
-      firebrandHt,
-      criticalCoverHeight,
-      u20
-    )
+      firebrandHt, criticalCoverHeight, u20)
     // expect(approx(flatDist, expected[species].flat, 6)).toEqual(true)
 
     const mtnDist = Spotting.distanceMountainTerrain(
-      flatDist,
-      location,
-      rvDist,
-      rvElev
-    )
-    expect(mtnDist).sig(
-      expected[species].mtn,
-      6,
-      `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`
-    )
+      flatDist, location, rvDist, rvElev)
+    expect(mtnDist).sig(expected[species].mtn, 6,
+      `distanceMountainTerrain(${flatDist}, ${location}, ${rvDist}, ${rvElev})`)
   })
 })
 
-test('Coverage', () => {
+test('5: Coverage', () => {
   expect(Spotting.locations()).toEqual([
     'midslopeWindward',
     'valleyBottom',
@@ -373,7 +286,5 @@ test('Coverage', () => {
   const flameHt = 10
   const flameDur = 5
   const ht = 4.24 * Math.pow(flameDur, 0.332) * flameHt + 0.5 * treeHt
-  expect(Spotting.torchingTreesFirebrandHeight(treeHt, flameHt, flameDur)).toEqual(
-    ht
-  )
+  expect(Spotting.torchingTreesFirebrandHeight(treeHt, flameHt, flameDur)).toEqual(ht)
 })

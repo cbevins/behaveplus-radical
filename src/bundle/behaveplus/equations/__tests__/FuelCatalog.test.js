@@ -52,7 +52,8 @@ test('2: Ensure all aliases and keys are correct', () => {
   const keys = FuelCatalog.keys()
   keys.forEach(key => {
     expect(FuelCatalog.hasAlias(key)).toEqual(true)
-    console.log(key)
-    // expect(FuelCatalog.hasAlias(parseInt(key))).toEqual(true)
+    if (!isNaN(parseInt(key))) {
+      expect(FuelCatalog.hasAlias(parseInt(key))).toEqual(true)
+    }
   })
 })

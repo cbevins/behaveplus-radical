@@ -1,17 +1,17 @@
 import * as SF from '../SurfaceFire.js'
 import * as FE from '../FireEllipse.js'
 
-test('SurfaceFire.spreadRateWithRosLimitApplied()', () => {
+test('1: SurfaceFire.spreadRateWithRosLimitApplied()', () => {
   expect(SF.spreadRateWithRosLimitApplied(100, 880)).toEqual(100)
   expect(SF.spreadRateWithRosLimitApplied(100, 90)).toEqual(90)
   expect(SF.spreadRateWithRosLimitApplied(100, 80)).toEqual(100)
 })
 
-test('SurfaceFire.phiEffectiveWind()', () => {
+test('2: SurfaceFire.phiEffectiveWind()', () => {
   expect(SF.phiEffectiveWind(1, 2)).toEqual(3)
 })
 
-test('SurfaceFire.spreadDirectionFromUpslope()', () => {
+test('3: SurfaceFire.spreadDirectionFromUpslope()', () => {
   const comp = [-1, 0, 1]
   const pi = Math.PI
   comp.forEach(xComp => {
@@ -34,7 +34,7 @@ test('SurfaceFire.spreadDirectionFromUpslope()', () => {
   })
 })
 
-test('FireEllipse.betaSpreadRate (betaHead, rosHead, eccent) ', () => {
+test('4: FireEllipse.betaSpreadRate (betaHead, rosHead, eccent) ', () => {
   const betaHead = 0
   const rosHead = 10
   const eccent = 2
