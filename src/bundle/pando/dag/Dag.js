@@ -19,6 +19,9 @@ export class Dag {
 
   clearSelected () { this.dna.clearSelected() }
 
+  // Returns the elapsed time of the previous update
+  elapsed () { return this.dna.results.elapsed }
+
   // Returns a Node reference given a Node reference, a Node key string, or a Node indice.
   get (nodeRefKeyIdx) { return this.dna.get(nodeRefKeyIdx) }
 
@@ -45,6 +48,9 @@ export class Dag {
   // Sets the inputs values of zero or more input Nodes AND updates all Dag Node values
   runInputs (keyValuePairs) { return this.dna.runInputs(keyValuePairs) }
 
+  // Returns the number of runs from the last update
+  runs () { return this.dna.results.runs }
+
   // Sets the value of zero or more Config Nodes, then resets the Required Set AND updates all Dag Node values
   runSelected (keyValuePairs) { return this.dna.runSelected(keyValuePairs) }
 
@@ -59,6 +65,10 @@ export class Dag {
 
   // Sets the inputs values of zero or more input Nodes WITHOUT updating the node values.
   setInputs (keyValuePairs) { return this.dna.setInputs(keyValuePairs) }
+
+  // Sets the run mode to 'orthogonal'
+  setModeCasewise () { this.dna.mode = 'casewise' }
+  setModeOrthogonal () { this.dna.mode = 'orthogonal' }
 
   // Adds or deletes zero or more Nodes from the selection set WITHOUT updating the required set or node values.
   setSelected (keyValuePairs) { return this.dna.setSelected(keyValuePairs) }
