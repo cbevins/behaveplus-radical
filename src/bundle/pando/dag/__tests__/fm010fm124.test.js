@@ -98,4 +98,7 @@ test('1: Fm010, FM124, and Weighted results validated against BP6', () => {
     const [nodeKey, expected, prec] = result
     expect(dag.get(nodeKey)).value(expected, prec)
   })
+
+  dag.clearInputs()
+  expect(dag.dna.input.size).toEqual(0)
 })

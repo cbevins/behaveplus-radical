@@ -13,22 +13,6 @@ import { Option } from '../../pando/index.js'
 export class Config extends Option {}
 
 // Configuration options
-export class ConfigModule extends Config {
-  constructor () {
-    super([
-      'surfaceFire', // Surface Fire, Fire Ellipse, Scorch Height, Tree Mortality, Fire Containment, Surface Spotting, Crown Fire, Crown Spotting
-      'fireEllipse', // Fire Ellipse, Scorch Height, Tree Mortality, Fire Containment
-      'scorchHeight', // Scorch height, Tree Mortality
-      'treeMortality', // Tree Mortality
-      'fireContainment', // Fire Containment
-      'surfaceSpotting', // Surface Fire Spotting
-      'crownFire', // Crown Fire, Crown Fire Spotting
-      'crownSpotting', // Crown Fire Spotting
-      'spottingDistance', // Burning Pile Spotting, Torching Trees Spotting
-      'ignitionProbability'])
-  }
-}
-
 export class ConfigModuleActive extends Config {
   constructor () {
     super(['active', 'inactive'])

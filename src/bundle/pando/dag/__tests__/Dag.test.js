@@ -32,7 +32,7 @@ test('2: Dag.get(), Node.idx, Node.key', () => {
 
 test('3: Node.variant', () => {
   const dag = new Dag(Dna)
-  expect(dag.dna.variant.length).toEqual(94)
+  expect(dag.dna.variant.length).toEqual(95)
   expect(dag.get(tl1hLoadKey).variant instanceof Variant.FuelOvendryLoad).toEqual(true)
 })
 

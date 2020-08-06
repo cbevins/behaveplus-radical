@@ -11,7 +11,7 @@ const bar = '        : 1.23456789012'
   expect(dag.nodeValue(nodeIdxOrKey)).value(expected, significantDigits)
 */
 export const sig = function (received, expected, precision, msg = '') {
-  if (typeof expected === 'number') {
+  if (typeof expected === 'number' && typeof received === 'number') {
     const exp = expected.toExponential(precision)
     const rec = received.toExponential(precision)
     const pass = exp === rec

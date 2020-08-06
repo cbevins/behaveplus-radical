@@ -67,6 +67,8 @@ export class Dag {
   setModeCasewise () { this.dna.mode = 'casewise' }
   setModeOrthogonal () { this.dna.mode = 'orthogonal' }
 
+  setRunLimit (limit) { this.dna.setRunLimit(limit) }
+
   // Adds or deletes zero or more Nodes from the selection set WITHOUT updating the required set or node values.
   setSelected (keyValuePairs) { return this.dna.setSelected(keyValuePairs) }
 

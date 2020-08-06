@@ -66,7 +66,7 @@ export class DagDna {
     this.configs = new Set()
     this.input = new Map()
     this.links = new Set()
-    this.mode = 'orthogonal' // or 'casewise', or 'stack'
+    this.mode = 'stack' // 'orthogonal' // or 'casewise', or 'stack'
     this.modules = new Set() // references to Module Nodes
     this.required = new Set() // references to required Nodes
     this.results = {
@@ -166,77 +166,8 @@ export class DagDna {
   // Sets the inputs values of zero or more input Nodes WITHOUT updating the node values
   setInputs (keyValuePairs) { return Client.setInputs(this, keyValuePairs) }
 
+  setRunLimit (limit) { this.results.runLimit = limit }
+
   // Adds or deletes zero or more Nodes from the selection set WITHOUT updating the required set or node values.
   setSelected (keyValuePairs) { return Client.setSelected(this, keyValuePairs) }
-
-  // -------------------------------------------------------------------------------
-  // UNTESTED or UNUSED
-  // -------------------------------------------------------------------------------
-
-  //   // Simple function arguments guard
-  //   _args (args, n) {
-  //     if (args.length !== n) {
-  //       throw new Error(`Expected ${n} arguments, but received ${args.length}`)
-  //     }
-  //   }
-
-  //   // Returns the index of the Node with the nodeKey, or throws Error
-  //   ensureNodeKey (nodeKey) {
-  //     if (this.dna.map.has(nodeKey)) { return this.dna.map.get(nodeKey) }
-  //     throw new Error(`Dag has no Node with key of '${nodeKey}'`)
-  //   }
-
-  //   hasNodeKey (nodeKey) { return this.dna.map.has(nodeKey) }
-
-  //   // Returns an array of current input values for node
-  //   nodeInputs (node) {
-  //     // this._args(arguments, 1)
-  //     return this.input.has(node) ? this.input.get(node) : []
-  //   }
-
-  //   nodeIsBound (node) {
-  //     // this._args(arguments, 1)
-  //     return node.update.method === this.dna.dagMethod.get('input')
-  //   }
-
-  //   nodeIsFixed (node) {
-  //     this._args(arguments, 1)
-  //     return node.update.method === this.dna.dagMethod.get('fixed')
-  //   }
-
-  //   nodeIsLink (node) {
-  //     // this._args(arguments, 1)
-  //     return this.links.has(node)
-  //   }
-
-  //   nodeIsModule (node) {
-  //     // this._args(arguments, 1)
-  //     return this.modules.has(node)
-  //   }
-
-  //   nodeIsRequired (node) {
-  //     // this._args(arguments, 1)
-  //     return this.required.has(node)
-  //   }
-
-  //   nodeIsRequiredConfig (node) {
-  //     // this._args(arguments, 1)
-  //     return this.required.has(node) && this.nodeIsConfig(node)
-  //   }
-
-  //   nodeIsRequiredInput (node) {
-  //     // this._args(arguments, 1)
-  //     return this.required.has(node) && this.nodeIsInput(node)
-  //   }
-
-  //   nodeIsSelected (node) {
-  //     // this._args(arguments, 1)
-  //     return this.selected.has(node)
-  //   }
-
-//   // Returns a reference to the Variant instance for nodeIdx
-//   nodeVariantClass (node) {
-//     // this._args(arguments, 1)
-//     return this.dna.variantClass[this.dna.variant[node.idx]]
-//   }
 }

@@ -338,4 +338,6 @@ test('6: Coverage', () => {
     .toEqual(0.1094 * Math.exp(0.0385 * age))
 
   expect(Chaparral.deadExtinctionMoisture()).toEqual(0.3)
+
+  expect(Chaparral.fuelTypes()).toEqual(['chamise', 'mixedBrush'])
 })

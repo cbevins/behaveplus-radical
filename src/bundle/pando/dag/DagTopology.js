@@ -34,7 +34,6 @@ export function reset (dag) {
         node.update.args.push(dag.literal(parm[1]))
       }
     })
-    // node.producers.forEach(producer => { producer.consumers.push(node) })
   }
   resetNodeDepths(dag)
 }
@@ -48,8 +47,9 @@ export function reset (dag) {
 function resetNodeDepths (dag) {
   // Step 1 - determine depth of the consumer chain for each Node
   let maxDepth = 0
-  dag.node.forEach((node, nodeIdx) => {
-    maxDepth = Math.max(maxDepth, resetNodeDepth(node, [nodeIdx]))
+  dag.node.forEach((node) => {
+    const visited = new Set([node.key])
+    maxDepth = Math.max(maxDepth, resetNodeDepth(node, visited))
   })
 
   // Step 2 - ensure input Nodes are processed after all other Nodes at the same depth
@@ -71,21 +71,20 @@ function resetNodeDepths (dag) {
  * that returns the Node's depth, calculating it first, if necessary
  * (Its OK to determine depths of disabled Nodes)
  * @param {Node} node
- * @param {integer[]} visited An array of indices of Nodes that have been traversed from the start of the chain
+ * @param {Set<Node>} visited A Set of keys to Nodes that have been traversed from the start of the chain
  */
 function resetNodeDepth (node, visited) {
   // If this Node doesn't yet have a depth, derive it
   if (!node.depth) {
     let maxDepth = 0
     node.consumers.forEach(consumer => {
-      if (visited.includes(consumer.idx)) {
-        visited.push(consumer.idx)
-        // \TODO Convert indices to keys for error message display
-        throw new Error(`Cyclical dependency detected:\n${visited.join(' required by ->\n')}`)
+      if (visited.has(consumer.key)) {
+        visited.add(consumer.key)
+        throw new Error(`Cyclical dependency detected:\n${Array.from(visited).join(' required by ->\n')}`)
       }
-      visited.push(consumer.idx)
+      visited.add(consumer.key)
       const depth = resetNodeDepth(consumer, visited)
-      visited.pop()
+      visited.delete(consumer.key)
       maxDepth = Math.max(depth, maxDepth)
     })
     node.depth = maxDepth + 1
@@ -107,5 +106,6 @@ export function selectNodeUpdaterIdx (dag, nodeIdx) {
       return updaterIdx // this is the appropriate updater
     }
   }
+  // The following line should never be executed, but still...
   return 0
 }

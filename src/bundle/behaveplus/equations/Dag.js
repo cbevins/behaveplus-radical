@@ -1,16 +1,10 @@
 /* eslint-disable no-unused-vars */
 // Node updater methods that are handled internally by the Dag
-export function bind (value) {
-  return value
-}
+export function bind (value) { return value }
 export function config (value) { return value }
 export function dangler (value) { return value }
-export function fixed (value) {
-  return value
-}
-export function input (value) {
-  return value
-}
+export function fixed (value) { return value }
+export function input (value) { return value }
 export function link (value) { return value }
 
 /*
