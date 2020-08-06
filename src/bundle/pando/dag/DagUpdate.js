@@ -1,5 +1,3 @@
-import { storeValues } from './DagStore.js'
-
 export function update (dag) {
   // Initialize Dag results Map with an entry for each Input and Selected Node
   dag.results.map.clear()
@@ -79,7 +77,7 @@ function updateRecursive (dag, stackIdx) {
   if (!dag.results.ok) return
   // If at the end of the stack...
   if (stackIdx === dag.stack.length) {
-    storeValues(dag)
+    dag.storeFunction(dag)
     dag.results.runs += 1
     if (dag.results.runs >= dag.results.runLimit) {
       dag.results.message = `Run limit of ${dag.results.runLimit} exceeded.`

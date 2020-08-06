@@ -79,6 +79,7 @@ export class DagDna {
     }
     this.selected = new Set() // references to selected Nodes
     this.sorted = [] // array of references to all Nodes in topological order
+    this.storeFunction = Store.storeValues
     this.node = [] // array of references to all Nodes
     // dna.variant has one element for each nodeIdx, whose value is a variant class idx
     this.dna.variant.forEach((variantIdx, nodeIdx) => {

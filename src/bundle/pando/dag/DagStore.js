@@ -30,6 +30,7 @@ export function runValue (dag, node, runIdx) {
 }
 
 // Stores current value of all input and selected Nodes in the Results Map
+// This is the default Dag.storeFunction
 export function storeValues (dag) {
   dag.results.map.forEach((runs, node) => runs.push(node.value))
 }

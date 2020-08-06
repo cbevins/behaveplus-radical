@@ -23,40 +23,18 @@ export function reset (dag) {
     const idx = selectNodeUpdaterIdx(dag, nodeIdx)
     const [methodIdx, ...parms] = dag.dna.updater[nodeIdx][idx][1]
     node.update.method = dag.dna.method[methodIdx]
-    if (methodIdx === dag.dna.dagMethod.get('fixed')) {
-      // apply Dag.fixed(arg0)
-      const [type, literalIdx] = parms[0]
-      if (type !== 1) throw new Error(`Fixed node ${dag._idxKey(nodeIdx)} parameter 0 is not a literal`)
-      node.update.args = [dag.literal(literalIdx)]
-    } else if (methodIdx === dag.dna.dagMethod.get('bind')) {
-      // apply Dag.bind(arg0)
-      const [type, bindIdx] = dag.dna.updater[nodeIdx][dag.updaterIdx[nodeIdx]][1][1]
-      if (type !== 0) throw new Error(`Bound node ${dag._idxKey(nodeIdx)} parameter 0 is not a nodeIdx`)
-      node.update.args = [dag.node[bindIdx]]
-      node.producers = [dag.node[bindIdx]]
-    } else if (methodIdx === dag.dna.dagMethod.get('input') ||
-        methodIdx === dag.dna.dagMethod.get('dangler')) {
-      // If the Node is an input, updateRecursive() already has handled value iteration
-      // so, apply Dag.input(self)
-      node.update.args = [node]
-    } else if (dag.nodeIsConfig(nodeIdx) || methodIdx === dag.dna.dagMethod.get('link')) {
-      // If the Node is Config, ignore it
-      // so, apply Dag.config(self)
-      node.update.args = [node]
-    } else {
-      // Otherwise, call the Node's method with the args
-      const args = []
-      parms.forEach(parm => {
-        if (parm[0] === 0) {
-          args.push(dag.node[parm[1]])
-          node.producers.push(dag.node[parm[1]])
-        } else {
-          args.push(dag.literal(parm[1]))
-        }
-      })
-      node.update.args = args
-    }
-    node.producers.forEach(producer => { producer.consumers.push(node) })
+    node.update.args = []
+    parms.forEach(parm => {
+      if (parm[0] === 0) { // if parm is a Node reference
+        const producer = dag.node[parm[1]]
+        node.update.args.push(producer)
+        node.producers.push(producer)
+        producer.consumers.push(node)
+      } else { // else parm is a literal value
+        node.update.args.push(dag.literal(parm[1]))
+      }
+    })
+    // node.producers.forEach(producer => { producer.consumers.push(node) })
   }
   resetNodeDepths(dag)
 }
