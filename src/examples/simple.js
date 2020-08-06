@@ -1,4 +1,5 @@
-import * as Dag from '../bundle/index.js'
+import * as Dag from '../../dist/bundle.esm.js'
+
 const dag = new Dag.Bpx()
 const config = [
   ['configure.fire.effectiveWindSpeedLimit', ['applied', 'ignored'][0]],
