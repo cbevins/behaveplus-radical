@@ -19,23 +19,27 @@ export function link (value) { return value }
         - Tree Mortality
 - Spotting from Burning Pile or Torching Trees
 - Ignition Probability
-*/
-export function module (dag) {
-  const surfaceFireActive = dag.nodeIdx('module.surfaceFire.active') // 'active', 'inactive'
-  const surfaceSpotActive = dag.nodeIdx('module.surfaceSpot.active') // 'active', 'inactive'
-  const fireEllipseActive = dag.nodeIdx('module.fireEllipse.active') // 'active', 'inactive'
-  const crownFireActive = dag.nodeIdx('module.crownFire.active') // 'active', 'inactive'
-  const crownSpotActive = dag.nodeIdx('module.crownSpot.active') // 'active', 'inactive'
-  const scorchHeightActive = dag.nodeIdx('module.scorchHeight.active')
-  const treeMortalityActive = dag.nodeIdx('module.treeMortality.active')
-  const spotActive = dag.nodeIdx('module.spot.active')
-  const ignitionProbabilityActive = dag.nodeIdx('module.ignitionProbability.active')
+  ['module.surfaceFire', module],
+  ['module.surfaceSpot', module],
+  ['module.crownFire', module],
+  ['module.crownSpot', module],
+  ['module.fireEllipse', module],
+  ['module.fireContain', module],
+  ['module.scorchHeight', module],
+  ['module.treeMortality', module],
+  ['module.spotting', module],
+  ['module.ignitionProbability', module],
 
-  const fireEllipseLink = dag.nodeIdx('module.fireEllipse.link') // 'standAlone', 'surfaceFire'
-  const crownFireLink = dag.nodeIdx('module.crownFire.link') // 'standAlone', 'surfaceFire'
-  const surfaceSpotLink = dag.nodeIdx('module.surfaceSpot.link') // 'standAlone', 'surfaceFire'
-  const scorchHeightLink = dag.nodeIdx('module.scorchHeight.link') // 'standAlone', 'surfaceFire'
-  const treeMortalityIdx = dag.nodeIdx('module.treeMortality.link') // 'standAlone', 'scorchHeight'
-  const crownSpotLink = dag.nodeIdx('module.crownSpot.link') // 'standAlone', 'crownFire'
-  const fireContainLink = dag.nodeIdx('module.crownSpot.link') // 'standAlone', 'fireEllipse'
+  ['link.crownFire', [['ConfigLinkSurfaceFire'], config]],
+  ['link.crownSpot', [['ConfigLinkCrownFire'], config]],
+  ['link.fireContain', [['ConfigLinkFireEllipse'], config]],
+  ['link.fireEllipse', [['ConfigLinkSurfaceFire'], config]],
+  ['link.scorchHeight', [['ConfigLinkSurfaceFire'], config]],
+  ['link.surfaceSpot', [['ConfigLinkSurfaceFire'], config]],
+  ['link.treeMortality', [['ConfigLinkScorchHeight'], config]],
+*/
+export function module (dag, nodeValuePairs) {
+  // Dag.modules and Dag.links are Sets Node references
+  console.log('module()')
+  // nodeValuePairs.forEach(([node, value]))
 }

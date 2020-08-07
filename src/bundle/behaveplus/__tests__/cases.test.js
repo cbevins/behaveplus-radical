@@ -60,7 +60,7 @@ test('1: Casewise test', () => {
   for (let fm = 0, idx = 0; fm < 2; fm += 1) {
     for (let dm = 0; dm < 3; dm += 1) {
       for (let ws = 0; ws < 5; ws += 1, idx += 1) {
-        expect(dag.runValue(ros, idx)).sig(
+        expect(dag.resultValue(ros, idx)).sig(
           results[fm][ws][dm], 5, `fm=${fm}, ws=${ws}, dm=${dm}, idx=${idx}`)
       }
     }
@@ -69,9 +69,9 @@ test('1: Casewise test', () => {
   dag.setModeCasewise()
   dag.runInputs(Inputs)
   expect(dag.results().runs).toEqual(5) //  fm  dm  ws
-  expect(dag.runValue(ros, 0)).sig(results[0][0][0], 5) //  10   5   0
-  expect(dag.runValue(ros, 1)).sig(results[1][1][1], 5) // 124  10   5
-  expect(dag.runValue(ros, 2)).sig(results[1][2][2], 5) // 124  15  10
-  expect(dag.runValue(ros, 3)).sig(results[1][3][2], 5) // 124  15  15
-  expect(dag.runValue(ros, 4)).sig(results[1][4][2], 5) // 124  15  20
+  expect(dag.resultValue(ros, 0)).sig(results[0][0][0], 5) //  10   5   0
+  expect(dag.resultValue(ros, 1)).sig(results[1][1][1], 5) // 124  10   5
+  expect(dag.resultValue(ros, 2)).sig(results[1][2][2], 5) // 124  15  10
+  expect(dag.resultValue(ros, 3)).sig(results[1][3][2], 5) // 124  15  15
+  expect(dag.resultValue(ros, 4)).sig(results[1][4][2], 5) // 124  15  20
 })

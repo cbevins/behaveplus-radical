@@ -36,36 +36,42 @@ export class Dag {
   // Returns an array of all required, updatable (non-Config-ish) Node references in topological order.
   requiredUpdateNodes () { return this.dna.requiredUpdateNodes() }
 
-  // Sets the value of zero or more Config Nodes, then resets the DAG topology and Required Set
-  runConfigs (keyValuePairs) { return this.dna.runConfigs(keyValuePairs) }
-
-  // Returns an array of result run indices that satisfy the input node-value pair specs
-  runIndices (inputNodeValuePairs) { return this.dna.runIndices(inputNodeValuePairs) }
-
-  // Sets the inputs values of zero or more input Nodes AND updates all Dag Node values
-  runInputs (keyValuePairs) { return this.dna.runInputs(keyValuePairs) }
-
   // Returns the results object {elasped: <ms>, map: <nodeMap>, message: <str>, ok: <bool>, runs: <n>,runLimit: <n>}
   results () { return this.dna.results }
 
-  // Sets the value of zero or more Config Nodes, then resets the Required Set AND updates all Dag Node values
-  runSelected (keyValuePairs) { return this.dna.runSelected(keyValuePairs) }
+  // Returns an array of result run indices that satisfy the input node-value pair specs
+  resultIndices (inputNodeValuePairs) { return this.dna.resultIndices(inputNodeValuePairs) }
 
   // Returns the Node's result value for the specified run index
-  runValue (nodeRefOrKey, runIdx) { return this.dna.runValue(nodeRefOrKey, runIdx) }
+  resultValue (nodeRefOrKey, runIdx) { return this.dna.resultValue(nodeRefOrKey, runIdx) }
+
+  // Sets the value of zero or more Config Nodes, resets the Dag topology, AND updates all Node values
+  runConfigs (keyValuePairs) { return this.dna.runConfigs(keyValuePairs) }
+
+  // Sets the inputs values of zero or more input Nodes AND updates all Node values
+  runInputs (keyValuePairs) { return this.dna.runInputs(keyValuePairs) }
+
+  // Sets the value of zero or more Module (and their Link) Nodes, AND updates all Node values
+  runModules (keyValuePairs) { return this.dna.runModules(keyValuePairs) }
+
+  // Sets the value of zero or more Config Nodes, AND updates all Node values
+  runSelected (keyValuePairs) { return this.dna.runSelected(keyValuePairs) }
 
   // Returns an array of references to all selected Nodes
   selectedNodes () { return this.dna.selectedNodes() }
 
-  // Sets the value of zero or more Config Nodes, then resets the DAG topology and required set
+  // Sets the value of zero or more Config Nodes WITHOUT updating any other Node values
   setConfigs (keyValuePairs) { return this.dna.setConfigs(keyValuePairs) }
 
-  // Sets the inputs values of zero or more input Nodes WITHOUT updating the node values.
+  // Sets the inputs values of zero or more input Nodes WITHOUT updating any other Node values
   setInputs (keyValuePairs) { return this.dna.setInputs(keyValuePairs) }
 
   // Sets the run mode to 'orthogonal'
   setModeCasewise () { this.dna.mode = 'casewise' }
   setModeOrthogonal () { this.dna.mode = 'orthogonal' }
+
+  // Sets the value of zero or more Module (and their Link) Nodes WITHOUT updating any other Node values
+  setModules (keyValuePairs) { return this.dna.setModules(keyValuePairs) }
 
   setRunLimit (limit) { this.dna.setRunLimit(limit) }
 

@@ -158,13 +158,13 @@ test('7: Validate stand-alone surface fire spotting with flameLength input resul
     const node = dag.get(`spotting.${nodeKey}.spotDistance.mountainTerrain`)
     Object.keys(results[nodeKey]).forEach(locationKey => {
       Object.keys(results[nodeKey][locationKey]).forEach(openKey => {
-        const idxArray = dag.runIndices([
+        const idxArray = dag.resultIndices([
           [location, locationKey],
           [isOpen, openKey === 'open']
         ])
         expect(idxArray.length).toEqual(1)
         const idx = idxArray[0]
-        expect(dag.runValue(node, idx)).toBeCloseTo(
+        expect(dag.resultValue(node, idx)).toBeCloseTo(
           results[nodeKey][locationKey][openKey], 5,
           `'${nodeKey}'-'${locationKey}'-'${openKey}'`
         )

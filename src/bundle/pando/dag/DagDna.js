@@ -142,29 +142,35 @@ export class DagDna {
   // Returns an array of all required, updatable (non-Config-ish) Node references in topological order.
   requiredUpdateNodes () { return this.sorted.filter(node => this.required.has(node) && node.update.able) }
 
-  // Sets the value of zero or more Config Nodes, then resets the DAG topology and Required Set
+  // Returns an array of result run indices that satisfy the input node-value pair specs
+  resultIndices (inputNodeValuePairs) { return Client.resultIndices(this, inputNodeValuePairs) }
+
+  // Returns the Node's result value for the specified run index
+  resultValue (nodeRefOrKey, runIdx) { return Store.resultValue(this, this.get(nodeRefOrKey), runIdx) }
+
+  // Sets the value of zero or more Config Nodes AND updates all Node values
   runConfigs (keyValuePairs) { return Client.runConfigs(this, keyValuePairs) }
 
-  // Returns an array of result run indices that satisfy the input node-value pair specs
-  runIndices (inputNodeValuePairs) { return Client.runIndices(this, inputNodeValuePairs) }
-
-  // Sets the inputs values of zero or more input Nodes AND updates all Dag Node values
+  // Sets the inputs values of zero or more input Nodes AND updates all Node values
   runInputs (keyValuePairs) { return Client.runInputs(this, keyValuePairs) }
+
+  // Sets the value of zero or more Module (and their Link) Nodes AND updates all Node values
+  runModules (keyValuePairs) { return Client.runModules(this, keyValuePairs) }
 
   // Sets the value of zero or more Config Nodes, then resets the Required Set and node values
   runSelected (keyValuePairs) { return Client.runSelected(this, keyValuePairs) }
 
-  // Returns the Node's result value for the specified run index
-  runValue (nodeRefOrKey, runIdx) { return Store.runValue(this, this.get(nodeRefOrKey), runIdx) }
-
   // Returns an array of references to all selected Nodes
   selectedNodes () { return Array.from(this.selected) }
 
-  // Sets the value of zero or more Config Nodes WITHOUT updating the Dag topology
+  // Sets the value of zero or more Config Nodes WITHOUT updating any other Node values
   setConfigs (keyValuePairs) { return Client.setConfigs(this, keyValuePairs) }
 
-  // Sets the inputs values of zero or more input Nodes WITHOUT updating the node values
+  // Adds the values of zero or more Nodes to the Input Set WITHOUT updating any other Node values
   setInputs (keyValuePairs) { return Client.setInputs(this, keyValuePairs) }
+
+  // Sets the value of zero or more Module (and Link) Nodes WITHOUT updating any other Node values
+  setModules (keyValuePairs) { return Client.setModules(this, keyValuePairs) }
 
   setRunLimit (limit) { this.results.runLimit = limit }
 

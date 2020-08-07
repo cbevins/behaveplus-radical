@@ -107,11 +107,11 @@ test('2: Lightning strike ignition, surfaceFire', () => {
   ])
   Object.keys(lightningResults).forEach(fuel => {
     ;['negative', 'positive', 'unknown'].forEach(charge => {
-      const indices = dag.runIndices([
+      const indices = dag.resultIndices([
         ['ignition.lightningStrike.fuel.type', fuel],
         ['ignition.lightningStrike.charge', charge]
       ])
-      expect(dag.runValue(node, indices[0])).toBeCloseTo(lightningResults[fuel][charge], 3,
+      expect(dag.resultValue(node, indices[0])).toBeCloseTo(lightningResults[fuel][charge], 3,
           `Test 2: ${fuel}-${charge}`
       )
     })
@@ -123,9 +123,9 @@ test('2: Lightning strike ignition, surfaceFire', () => {
     ['ignition.lightningStrike.charge', ['positive']],
     ['site.moisture.dead.tl100h', [0.39, 0.4, 0.41]]
   ])
-  expect(dag.runValue(node, 0)).toBeCloseTo(0.027827, 4)
-  expect(dag.runValue(node, 1)).toBeCloseTo(0.025509, 4)
-  expect(dag.runValue(node, 2)).toBeCloseTo(0.025509, 4)
+  expect(dag.resultValue(node, 0)).toBeCloseTo(0.027827, 4)
+  expect(dag.resultValue(node, 1)).toBeCloseTo(0.025509, 4)
+  expect(dag.resultValue(node, 2)).toBeCloseTo(0.025509, 4)
 
   // Test depth input limits
   dag.runInputs([
@@ -133,7 +133,7 @@ test('2: Lightning strike ignition, surfaceFire', () => {
     ['ignition.lightningStrike.charge', ['positive']],
     ['ignition.lightningStrike.fuel.depth', [3 / 12, 4 / 12, 5 / 12]]
   ])
-  expect(dag.runValue(node, 0)).toBeCloseTo(0.882175, 5)
-  expect(dag.runValue(node, 1)).toBeCloseTo(0.899335, 5)
-  expect(dag.runValue(node, 2)).toBeCloseTo(0.899335, 5)
+  expect(dag.resultValue(node, 0)).toBeCloseTo(0.882175, 5)
+  expect(dag.resultValue(node, 1)).toBeCloseTo(0.899335, 5)
+  expect(dag.resultValue(node, 2)).toBeCloseTo(0.899335, 5)
 })

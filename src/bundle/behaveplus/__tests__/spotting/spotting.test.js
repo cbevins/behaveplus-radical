@@ -156,50 +156,50 @@ test('2: Validate stand-alone with flameLength input results against BP6', () =>
   ])
 
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'ridgeTop'],
       [isOpen, false]
     ])).toEqual([0])
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'ridgeTop'],
       [isOpen, true]
     ])).toEqual([4])
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'midslopeWindward'],
       [isOpen, false]
     ])).toEqual([1])
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'midslopeWindward'],
       [isOpen, true]
     ])).toEqual([5])
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'valleyBottom'],
       [isOpen, false]
     ])).toEqual([2])
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'valleyBottom'],
       [isOpen, true]
     ])).toEqual([6])
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'midslopeLeeward'],
       [isOpen, false]
     ])).toEqual([3])
   expect(
-    dag.runIndices([
+    dag.resultIndices([
       [location, 'midslopeLeeward'],
       [isOpen, true]
     ])).toEqual([7])
 
-  expect(dag.runIndices([[location, 'ridgeTop']])).toEqual([0, 4])
-  expect(dag.runIndices([[location, 'midslopeLeeward']])).toEqual([3, 7])
+  expect(dag.resultIndices([[location, 'ridgeTop']])).toEqual([0, 4])
+  expect(dag.resultIndices([[location, 'midslopeLeeward']])).toEqual([3, 7])
 
-  expect(dag.runIndices([[location, 'junk']])).toEqual([])
+  expect(dag.resultIndices([[location, 'junk']])).toEqual([])
 
   const results = {
     torchingTrees: {
@@ -232,13 +232,13 @@ test('2: Validate stand-alone with flameLength input results against BP6', () =>
     const node = dag.get(`spotting.${nodeKey}.spotDistance.mountainTerrain`)
     Object.keys(results[nodeKey]).forEach(locationKey => {
       Object.keys(results[nodeKey][locationKey]).forEach(openKey => {
-        const idxArray = dag.runIndices([
+        const idxArray = dag.resultIndices([
           [location, locationKey],
           [isOpen, openKey === 'open']
         ])
         expect(idxArray.length).toEqual(1)
         const idx = idxArray[0]
-        expect(dag.runValue(node, idx)).toBeCloseTo(
+        expect(dag.resultValue(node, idx)).toBeCloseTo(
           results[nodeKey][locationKey][openKey], 2,
           `'${nodeKey}'-'${locationKey}'-'${openKey}'`
         )
@@ -301,13 +301,13 @@ test('3: Validate stand-alone surface fire spotting with flameLength input resul
     const node = dag.get(`spotting.${nodeKey}.spotDistance.mountainTerrain`)
     Object.keys(results[nodeKey]).forEach(locationKey => {
       Object.keys(results[nodeKey][locationKey]).forEach(openKey => {
-        const idxArray = dag.runIndices([
+        const idxArray = dag.resultIndices([
           [location, locationKey],
           [isOpen, openKey === 'open']
         ])
         expect(idxArray.length).toEqual(1)
         const idx = idxArray[0]
-        expect(dag.runValue(node, idx)).toBeCloseTo(
+        expect(dag.resultValue(node, idx)).toBeCloseTo(
           results[nodeKey][locationKey][openKey], 5,
           `'${nodeKey}'-'${locationKey}'-'${openKey}'`
         )

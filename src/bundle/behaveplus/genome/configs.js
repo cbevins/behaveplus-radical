@@ -1,6 +1,5 @@
 const module = [['ConfigModuleActive'], [['finally', 'Dag.module']]]
 const config = [['finally', 'Dag.config']]
-const link = [['ConfigLinkSurfaceFire'], config]
 
 export const genome = [
   ['module.surfaceFire', module],

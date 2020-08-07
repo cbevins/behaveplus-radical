@@ -332,11 +332,11 @@ test('5: Tree mortality results validation with BP6', () => {
   ])
   for (let idx = 0; idx < species.length; idx++) {
     const spp = species[idx]
-    expect(dag.runValue(treeSpecies, idx)).toEqual(spp)
-    expect(dag.runValue(volScorched, idx)).sig(0.88888888888, 9)
-    expect(dag.runValue(lenScorched, idx)).sig(40 / 60, 6)
+    expect(dag.resultValue(treeSpecies, idx)).toEqual(spp)
+    expect(dag.resultValue(volScorched, idx)).sig(0.88888888888, 9)
+    expect(dag.resultValue(lenScorched, idx)).sig(40 / 60, 6)
     if (Results.hasOwnProperty(spp)) {
-      expect(dag.runValue(mortality, idx)).sig(Results[spp][0], 5, `${spp}`)
+      expect(dag.resultValue(mortality, idx)).sig(Results[spp][0], 5, `${spp}`)
       // expect(treeBark.value.run[idx]).sig(Results[spp][1], 5, `${spp}`)
     }
   }

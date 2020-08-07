@@ -170,11 +170,11 @@ test('4: Scorch height standAlone and batched flameLengths', () => {
   ])
   // Fetch all 200 results
   for (let idx = 0; idx < 200; idx += 1) {
-    const flame = dag.runValue(observedFlame, idx)
-    const air = dag.runValue(airTemp, idx)
-    const wind = dag.runValue(windSpeed, idx)
+    const flame = dag.resultValue(observedFlame, idx)
+    const air = dag.resultValue(airTemp, idx)
+    const wind = dag.resultValue(windSpeed, idx)
     const expected = SurfaceFire.scorchHtFromFlame(flame, wind, air)
-    expect(dag.runValue(scorchHt, idx)).toBeCloseTo(expected, 4, `air=${air}, wind=${wind}, flame=${flame}`)
+    expect(dag.resultValue(scorchHt, idx)).toBeCloseTo(expected, 4, `air=${air}, wind=${wind}, flame=${flame}`)
   }
 })
 

@@ -137,8 +137,8 @@ test('2: Validate stand-alone crown fire results against BP6', () => {
 
   expect(dag.get('spotting.crownFire.firebrand.height').value).toBeCloseTo(157.737995, 2)
   const node = dag.get('spotting.crownFire.spotDistance.mountainTerrain')
-  expect(dag.runValue(node, 0)).toBeCloseTo(881.615994, 2)
-  expect(dag.runValue(node, 1)).toBeCloseTo(816.907774, 2)
-  expect(dag.runValue(node, 2)).toBeCloseTo(726.989367, 2)
-  expect(dag.runValue(node, 3)).toBeCloseTo(779.67935, 2)
+  expect(dag.resultValue(node, 0)).toBeCloseTo(881.615994, 2)
+  expect(dag.resultValue(node, 1)).toBeCloseTo(816.907774, 2)
+  expect(dag.resultValue(node, 2)).toBeCloseTo(726.989367, 2)
+  expect(dag.resultValue(node, 3)).toBeCloseTo(779.67935, 2)
 })

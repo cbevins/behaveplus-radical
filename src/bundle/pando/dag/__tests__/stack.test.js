@@ -106,23 +106,23 @@ test('2: Run limit orthogonalStack', () => {
   expect(results.ok).toEqual(false)
   expect(results.message).toEqual('Run limit of 25 exceeded.')
 
-  let indices = dag.runIndices([['site.moisture.dead.tl1h', 0.03]])
+  let indices = dag.resultIndices([['site.moisture.dead.tl1h', 0.03]])
   expect(indices).toEqual([2, 7, 12, 17, 22]) // 5 deadMois x 3 liveMois x 2 fuelModel
 
-  indices = dag.runIndices([
+  indices = dag.resultIndices([
     ['site.moisture.dead.tl1h', 0.03],
     ['site.moisture.live.herb', 1]
   ])
   expect(indices).toEqual([7, 22]) // 5 deadMois x 3 liveMois x 2 fuelModel
 
-  indices = dag.runIndices([
+  indices = dag.resultIndices([
     ['site.moisture.dead.tl1h', 0.03],
     ['site.moisture.live.herb', 1],
     ['surface.primary.fuel.model.catalogKey', '124']
   ])
   expect(indices).toEqual([22])
 
-  expect(() => dag.runValue('surface.primary.fuel.fire.scorchHeight', 0)).toThrow()
+  expect(() => dag.resultValue('surface.primary.fuel.fire.scorchHeight', 0)).toThrow()
   expect(() => dag.runInputs([[['site.wind.speed.atMidflame', [880]]]])).toThrow()
   expect(() => dag.runInputs()).toThrow()
 })

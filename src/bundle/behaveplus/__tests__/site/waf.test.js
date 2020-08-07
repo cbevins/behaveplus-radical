@@ -161,9 +161,9 @@ test('2: Fuel bed WAF with input vs estimated WAF', () => {
   expect(inputNodes.length).toEqual(1)
   expect(inputNodes).toContain(siteWaf)
   dag.runInputs([[siteWaf, [0, 0.5, 1]]])
-  expect(dag.runValue(primaryFuelWaf, 0)).toEqual(0)
-  expect(dag.runValue(primaryFuelWaf, 1)).toEqual(0.5)
-  expect(dag.runValue(primaryFuelWaf, 2)).toEqual(1)
+  expect(dag.resultValue(primaryFuelWaf, 0)).toEqual(0)
+  expect(dag.resultValue(primaryFuelWaf, 1)).toEqual(0.5)
+  expect(dag.resultValue(primaryFuelWaf, 2)).toEqual(1)
 
   // If WAF is estimated, we need canopy and depth inputs
   dag.runConfigs([[cfgWaf, 'estimated']])

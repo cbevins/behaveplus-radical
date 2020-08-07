@@ -22,33 +22,40 @@ function _valid (node, value, message) {
   return value
 }
 
+// Returns an array of result run indices that satisfy the input node-value pair specs
+export function resultIndices (dag, inputNodeValuePairs) {
+  return Store.resultIndices(dag, _refVals(dag, inputNodeValuePairs, 'resultIndices'))
+}
+
 // Sets the value of zero or more Config Nodes, resets the Dag topology,
-// AND resets the Required and Input Stes and updates the Dag Node values
+// AND resets the Required and Input Sets and updates the Dag Node values
 export function runConfigs (dag, keyValuePairs) {
   setConfigs(dag, keyValuePairs)
   runSelected(dag, [])
 }
 
-// Returns an array of result run indices that satisfy the input node-value pair specs
-export function runIndices (dag, inputNodeValuePairs) {
-  return Store.runIndices(dag, _refVals(dag, inputNodeValuePairs, 'runIndices'))
-}
-
-// Adds the values of zero or more Nodes to the Input Set
-// AND then updates the Dag Node values
+// Adds the values of zero or more Nodes to the Input Set AND updates all Node values
 export function runInputs (dag, keyValuePairs) {
   setInputs(dag, keyValuePairs)
   update(dag)
 }
 
+// Sets the value of zero or more Config Nodes, resets the Dag topology,
+// AND resets the Required and Input Sets and updates the Dag Node values
+export function runModules (dag, keyValuePairs) {
+  setModules(dag, keyValuePairs)
+  runConfigs(dag, [])
+}
+
 // Adds or deletes zero or more Nodes from the Selected Set, resets the Required and Input Set,
-// NAD then updates the Dag Node values
+// AND updates all Node values
 export function runSelected (dag, keyValuePairs) {
   setSelected(dag, keyValuePairs)
   update(dag)
 }
 
 // Sets the value of zero or more Config Nodes and resets the Dag topology
+// WITHOUT updating any other Node values
 export function setConfigs (dag, keyValuePairs) {
   _refVals(dag, keyValuePairs, 'setConfigs').forEach(([node, value]) => {
     node.value = _valid(node, value, `Config Node '${node.key}' value '${value}' is invalid`)
@@ -56,13 +63,26 @@ export function setConfigs (dag, keyValuePairs) {
   Topology.reset(dag)
 }
 
-// Adds the values of zero or more Nodes to the Input Set WITHOUT updating node values.
+// Adds the values of zero or more Nodes to the Input Set
+// WITHOUT updating any other Node values
 export function setInputs (dag, keyValuePairs) {
   _refVals(dag, keyValuePairs, 'setInputs').forEach(([node, value]) => {
     const values = Array.isArray(value) ? value : [value] // ensure values are in an array
     values.forEach(value => { _valid(node, value, `Input Node '${node.key}' value '${value}' is invalid`) })
     dag.input.set(node, values)
   })
+}
+
+// Sets the value of zero or more Module (and their Link) Nodes
+// WITHOUT updating any other Node values
+export function setModules (dag, keyValuePairs) {
+  _refVals(dag, keyValuePairs, 'setModules').forEach(([node, value]) => {
+    node.value = _valid(node, value, `Module Node '${node.key}' value '${value}' is invalid`)
+  })
+  // Client-crafted function that uses Module Nodes to update Link Nodes
+  const methodRef = dag.dagMethod.get('module')
+  methodRef.apply(this, [dag])
+  setConfigs([])
 }
 
 // Determines the Set of required Nodes
@@ -88,7 +108,8 @@ function setRequiredRecursive (dag, node) {
   }
 }
 
-// Adds or deletes zero or more Nodes from the Selected Set
+// Adds/deletes zero or more Nodes to/from the Selected Set
+// WITHOUT updating any other Node values
 export function setSelected (dag, keyValuePairs) {
   _refVals(dag, keyValuePairs, 'setSelected').forEach(([node, select]) => {
     return select ? dag.selected.add(node) : dag.selected.delete(node)

@@ -36,10 +36,10 @@ test('1: Crown fire with zero flame length', () => {
     ['site.terrain.spotSourceLocation', ['ridgeTop', 'midslopeWindward', 'valleyBottom', 'midslopeLeeward']],
     ['site.fire.crown.flameLength', [40]]
   ])
-  expect(dag.runValue(node, 0)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 1)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 2)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 3)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 0)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 1)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 2)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 3)).toBeCloseTo(0, 12)
 
   // Zero flame length
   dag.runInputs([
@@ -47,10 +47,10 @@ test('1: Crown fire with zero flame length', () => {
     ['site.wind.speed.at20ft', [880]],
     ['site.fire.crown.flameLength', [0]]
   ])
-  expect(dag.runValue(node, 0)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 1)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 2)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 3)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 0)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 1)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 2)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 3)).toBeCloseTo(0, 12)
 
   // Zero wind speed
   dag.runInputs([
@@ -58,10 +58,10 @@ test('1: Crown fire with zero flame length', () => {
     ['site.wind.speed.at20ft', [0]],
     ['site.fire.crown.flameLength', [40]]
   ])
-  expect(dag.runValue(node, 0)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 1)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 2)).toBeCloseTo(0, 12)
-  expect(dag.runValue(node, 3)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 0)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 1)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 2)).toBeCloseTo(0, 12)
+  expect(dag.resultValue(node, 3)).toBeCloseTo(0, 12)
 })
 
 test('2: drift()', () => {
