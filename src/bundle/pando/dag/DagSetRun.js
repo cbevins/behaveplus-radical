@@ -79,13 +79,13 @@ export function setModules (dag, keyValuePairs) {
   _refVals(dag, keyValuePairs, 'setModules').forEach(([node, value]) => {
     node.value = _valid(node, value, `Module Node '${node.key}' value '${value}' is invalid`)
   })
-  // Client-crafted function that uses Module Nodes to update Link Nodes
-  const methodRef = dag.dagMethod.get('module')
+  // Client-crafted function that uses newly-set Module Node values to update Link Nodes
+  const methodRef = dag.dna.dagMethod.get('module')
   methodRef.apply(this, [dag])
-  setConfigs([])
+  setConfigs(dag, [])
 }
 
-// Determines the Set of required Nodes
+// Determines the Set of required Nodes from the set of enabled selected Nodes
 // Should be called after setSelected()
 export function setRequiredNodes (dag) {
   dag.required.clear()

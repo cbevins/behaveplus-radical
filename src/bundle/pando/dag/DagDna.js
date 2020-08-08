@@ -15,7 +15,7 @@ export class Node {
     this.depth = 0
     this.idx = nodeIdx
     this.isEnabled = true
-    this.isInput = false
+    // this.isInput = false
     this.key = nodeKey
     this.order = 0
     this.producers = [] // array of references to producer Nodes
@@ -44,6 +44,22 @@ export class Node {
    * - truncation of digits to current display precision, decimals, or exponentiation.
    */
   displayValue () { return this.variant.displayValue(this.value) }
+
+  // variant.isValid() returns object { pass: <bool>, value: <testValue>, fails: <failedTestName> }
+  ensureValidValue (value) {
+    const result = this.variant.isValid(value)
+    if (!result.pass) {
+      throw new Error(`Node ${this.key} value ${value} fails test ${result.fails}`)
+    }
+    return value
+  }
+
+  isValidValue (value) { return (this.variant.isValid(value)).pass }
+
+  setValue (value) {
+    this.value = this.ensureValidValue(value)
+    return this.value
+  }
 
   updateValue () {
     // DO NOT use this.update.args.map(), as it increases time by 50%
@@ -114,7 +130,7 @@ export class DagDna {
   // Returns the value of the literal with literalIdx
   literal (literalIdx) { return this.dna.literal[literalIdx] }
 
-  // Returns an array of references to ALL Config Nodes that may be used by node
+  // Returns an array of references to ALL Config Nodes that may be used by `node`
   // Called only by DagSetRun.setRequiredRecursive()
   nodeConfigs (node) {
     const configs = new Set()
@@ -127,8 +143,8 @@ export class DagDna {
   // Returns TRUE if Node Variant is derived from a Config class
   nodeIsConfig (node) { return this.configs.has(node) || this.links.has(node) }
 
-  // Returns TRUE if Node currently uses the Dag.input() updater method
-  nodeIsInput (node) { return node.update.method === this.dna.dagMethod.get('input') }
+  // Returns TRUE if Node currently uses the Dag.input() updater method AND it is required (and enabled)
+  nodeIsInput (node) { return this.required.has(node) && node.update.method === this.dna.dagMethod.get('input') }
 
   // Returns an array of required Config Node references in topological order
   requiredConfigNodes () { return this.sorted.filter(node => this.required.has(node) && this.nodeIsConfig(node)) }
