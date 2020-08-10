@@ -1217,5 +1217,5 @@ export const alphabeticalOrder = [
   [1215, 8, 'surface.weighted.fire.scorchHeight'],
   [1216, 24, 'surface.weighted.fire.spreadRate'],
   [1217, 8, 'surface.weighted.fire.wind.speed.atMidflame'],
-  [1218, 2, 'surface.weighted.fire.windSpeedAdjustmentFactor'],
+  [1218, 2, 'surface.weighted.fire.windSpeedAdjustmentFactor']
 ]
