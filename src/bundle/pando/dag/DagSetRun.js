@@ -81,7 +81,7 @@ export function setModules (dag, keyValuePairs) {
   })
   // Client-crafted function that uses newly-set Module Node values to update Link Nodes
   const methodRef = dag.dna.dagMethod.get('module')
-  methodRef.apply(this, [dag])
+  methodRef.apply(this, [dag, dag.moduleArg])
   setConfigs(dag, [])
 }
 

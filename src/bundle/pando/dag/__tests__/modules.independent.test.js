@@ -77,6 +77,7 @@ function setModules (dag, value) { dag.setModules(moduleKeys.map(key => [key, va
 
 test('1: Default Module and Link values', () => {
   const dag = new Dag(Dna)
+  dag.dna.moduleArg = 'independent'
   dag.setConfigs(config) // Standard configuration
   moduleKeys.forEach(key => { expect(dag.get(key).value).toEqual('active') })
   linkKeys.forEach(key => { expect(dag.get(key).value).not.toEqual('standAlone') })
@@ -84,6 +85,7 @@ test('1: Default Module and Link values', () => {
 
 test('2: Direct setting of module and link values (dont try this at home)', () => {
   const dag = new Dag(Dna)
+  dag.dna.moduleArg = 'independent'
   dag.setConfigs(config) // Standard configuration
   moduleKeys.forEach(key => { dag.get(key).setValue('inactive') })
   moduleKeys.forEach(key => { expect(dag.get(key).value).toEqual('inactive') })
@@ -94,13 +96,14 @@ test('2: Direct setting of module and link values (dont try this at home)', () =
 
 test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   const dag = new Dag(Dna)
+  dag.dna.moduleArg = 'independent'
   dag.setConfigs(config) // Standard configuration
   // Start with no active modules
   setModules(dag, 'inactive')
   moduleKeys.forEach(key => { expect(dag.get(key).value).toEqual('inactive') })
   linkKeys.forEach(key => { expect(dag.get(key).value).toEqual('standAlone') })
 
-  // Only 71 site.*, 4 docs.*, 10 configure.*, 7 link.*, and 10 module.* Nodes should be active
+  // Only 71 site.*, 4 docs.*, 10 configure.*, 7 link.*, and 10 module.* Nodes should be enabled
   expect(enabledNodes(dag).length).toEqual(102)
 
   // Activating tree mortality enables 4 additional Nodes
@@ -312,8 +315,9 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(enabledNodes(dag).length).toEqual(102)
 })
 
-test('3: Module selection', () => {
+test('4: Module selection', () => {
   const dag = new Dag(Dna)
+  dag.dna.moduleArg = 'independent'
   dag.setConfigs(config) // Standard configuration
   setModules(dag, 'inactive')
   expect(enabledNodes(dag).length).toEqual(102)
@@ -343,7 +347,7 @@ test('3: Module selection', () => {
 
   dag.runModules([['module.surfaceFire', 'active']])
   inputNodes = dag.requiredInputNodes()
-  console.log(inputNodes.reduce((acc, node) => acc + node.key + '\n', ''))
+  // console.log(inputNodes.reduce((acc, node) => acc + node.key + '\n', ''))
   // We have to add 1 fuel key, 5 moistures, 1 slope,
   // But, no longer need to input surface fire flameLength
   expect(inputNodes.length).toEqual(14)

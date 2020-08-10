@@ -2,9 +2,8 @@ export class Node {
   constructor (nodeIdx, nodeKey, variantRef) {
     this.consumers = [] // aray of references to consumer Nodes
     this.depth = 0
-    this.idx = nodeIdx
+    this.idx = nodeIdx // index into the Dna.updater[] array, used only by DagDna.nodeConfigs()
     this.isEnabled = true
-    // this.isInput = false
     this.key = nodeKey
     this.order = 0
     this.producers = [] // array of references to producer Nodes
@@ -34,6 +33,7 @@ export class Node {
    */
   displayValue () { return this.variant.displayValue(this.value) }
 
+  // Throws an Error() if `value` is a NOT valid for this Node's Variant class.
   // variant.isValid() returns object { pass: <bool>, value: <testValue>, fails: <failedTestName> }
   ensureValidValue (value) {
     const result = this.variant.isValid(value)
@@ -43,15 +43,23 @@ export class Node {
     return value
   }
 
+  // Returns TRUE if `value` is a valid value for this Node's Variant class.
   isValidValue (value) { return (this.variant.isValid(value)).pass }
 
+  // Set's this Node's value AFTER ensuring it is valid.
   setValue (value) {
     this.value = this.ensureValidValue(value)
     return this.value
   }
 
+  /**
+   * Updates the Node's value by calling its updater method and storing the result.
+   *
+   * NOTE: This is the most heavily used function in the entire system.
+   * DO NOT use this.update.args.map() to iterate over method args,
+   * as it increases execution time time by 50% !!!
+   */
   updateValue () {
-    // DO NOT use this.update.args.map(), as it increases time by 50%
     const args = []
     for (let i = 0; i < this.update.args.length; i++) {
       const parm = this.update.args[i]

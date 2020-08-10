@@ -21,6 +21,7 @@ export class DagDna {
     this.input = new Map()
     this.links = new Set()
     this.mode = 'stack' // 'orthogonal' // or 'casewise', or 'stack'
+    this.moduleArg = 'none' // 'independent' or 'none'
     this.modules = new Set() // references to Module Nodes
     this.required = new Set() // references to required Nodes
     this.results = {

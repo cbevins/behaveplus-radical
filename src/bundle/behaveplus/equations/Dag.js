@@ -7,26 +7,35 @@ export function fixed (value) { return value }
 export function input (value) { return value }
 export function link (value) { return value }
 
-/*
- Callback for Dag.setModule()
-  - Surface Fire
-    - Crown Fire
-        - Crown Fire Spotting
-    - Fire Ellipse
-        - Fire Containment
-    - Surface Fire Spotting
-    - Scorch Height
-        - Tree Mortality
-- Spotting from Burning Pile or Torching Trees
-- Ignition Probability
+/**
+ * Callback for Dag.setModule()
+ *
+ * Notes:
+ * - module() is called via Dag.setModules() -> DagDna.setModules() -> DagSetRun.setModules()
+ * - The Module values have already been set before module() is called
+ * - module() should enabled/disable Nodes and set Link Nodes as appropriate
+ * - After returning from module(), DagSetRun.setModules() calls config()
+ *
+ * @param {Dag} dag  Reference to the DagDna instance
+ * @param {string} mode 'cascade', 'independent', or 'none'
+ *
+ * In 'independent' mode, any two modules are ALWAYS and ONLY linked WHEN they are both active.
+ * Thus, if both surfaceFire and crownFire are activate, they are also linked.
+ * If crownSpot is then also activated, it is also linked to crownFire and then surfaceFire.
+ * This forces the client to select all active modules, just as for BehavePlus for Windows.
+ *
+ * If mode is 'none', then links are set just like any other configure Node.
+ * For example, if the client selects the flanking spread rate, the 'link.fireEllipse'
+ * configuration Node becomes 'required', and the client may then choose between
+ * 'linkedToSurfaceFire' or 'standAlone'.
+ */
+export function module (dag, mode) {
+  if (mode === 'independent') {
+    moduleIndependent(dag)
+  }
+}
 
-Notes:
-  - module() is called via Dag.setModules() -> DagDna.setModules() -> DagSetRun.setModules()
-  - The Module values have already been set before module() is called
-  - module() should enabled/disable Nodes and set Link Nodes as appropriate
-  - After returning from module(), DagSetRun.setModules() calls config()
-*/
-export function module (dag) {
+function moduleIndependent (dag) {
   const modules = [
     ['surfaceFire', ['surface.primary', 'surface.secondary', 'surface.weighted'], null],
     ['surfaceSpot', ['spotting.surfaceFire'], 'surfaceFire'],
