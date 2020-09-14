@@ -1,3 +1,4 @@
+// import analyze from 'rollup-plugin-analyzer'
 import { terser } from 'rollup-plugin-terser'
 import resolve from '@rollup/plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
@@ -14,7 +15,8 @@ export default [
     output: [
       {
         file: `${bundle}.esm.js`,
-        format: 'esm'
+        format: 'esm',
+        plugins: [analyze()]
       },
       {
         file: `${bundle}.esm.min.js`,
@@ -32,6 +34,7 @@ export default [
       }
     ],
     plugins: [
+      // analyze({ stdout: true }),
       resolve(),
       babel({
         exclude: 'node_modules/**'

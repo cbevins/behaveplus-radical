@@ -73,10 +73,10 @@ cases.forEach((c, idx) => {
     ['site.moisture.dead.tl10h', [0.12]],
     ['site.moisture.dead.tl100h', [0.15]],
     ['site.moisture.live.stem', [1.5]],
-    ['site.slope.steepness.ratio', 0.2],
-    ['site.moisture.dead.tl1h', c[4]],
-    ['site.wind.speed.atMidflame', 88 * c[2]],
-    ['site.temperature.air', c[1]]
+    ['site.slope.steepness.ratio', [0.2]],
+    ['site.moisture.dead.tl1h', [c[4]]],
+    ['site.wind.speed.atMidflame', [88 * c[2]]],
+    ['site.temperature.air', [c[1]]]
   ])
   let str = `${c[0]} ${c[1]} ${c[2]} ${c[3]} ${c[4]} : `
   str += ros.displayString() + ' '
