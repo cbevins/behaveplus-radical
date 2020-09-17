@@ -1,4 +1,4 @@
-// import analyze from 'rollup-plugin-analyzer'
+import analyze from 'rollup-plugin-analyzer'
 import { terser } from 'rollup-plugin-terser'
 import resolve from '@rollup/plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
