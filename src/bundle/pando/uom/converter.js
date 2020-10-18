@@ -4,7 +4,7 @@
  * @author Collin D. Bevins, <cbevins@montana.com>
  * @license MIT
  * @version 0.1.0
- * #coverage-20200506
+ * #coverage-20200507
  */
 import { UnitsMap } from './UnitsOfMeasure.js'
 
@@ -85,7 +85,7 @@ export function convert (fromAmount, fromUnits, intoUnits) {
  * - 'btu/ft-s'
  * - 'ft-lb/min'
  *
- * This function can also be used to ensure correct uinots-of-measure strings,
+ * This function can also be used to ensure correct units-of-measure strings,
  * as it will throw an Error if it is unable to parse the units.
  *
  * @param {string} units Units-of-measure string.  The following syntax is accepted:

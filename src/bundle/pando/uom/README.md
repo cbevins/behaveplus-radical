@@ -1,5 +1,5 @@
 # behaveplus-uom
-Units-of-measure conversion package for use with behaveplus-variant and behaveplus-core.
+Units-of-measure conversion package for use with behaveplus-radical.
 
 ---
 
