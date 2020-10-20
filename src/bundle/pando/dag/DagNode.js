@@ -1,9 +1,12 @@
+import { nodeLabel } from '../../utils/utils.js'
+
 export class Node {
   constructor (nodeIdx, nodeKey, variantRef) {
     this.consumers = [] // aray of references to consumer Nodes
     this.depth = 0
     this.idx = nodeIdx // index into the Dna.updater[] array, used only by DagDna.nodeConfigs()
     this.isEnabled = true
+    this.label = null
     this.key = nodeKey
     this.order = 0
     this.producers = [] // array of references to producer Nodes
@@ -14,6 +17,14 @@ export class Node {
     }
     this.value = variantRef.defaultValue()
     this.variant = variantRef
+  }
+
+  displayLabel () {
+    return this.label || nodeLabel(this.key)
+  }
+
+  displayLine () {
+    return this.displayLabel() + ' ' + this.displayString()
   }
 
   /**
