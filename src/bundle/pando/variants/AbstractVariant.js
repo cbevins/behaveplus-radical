@@ -36,6 +36,10 @@ export class AbstractVariant {
     return this.displayValue(value)
   }
 
+  displayUnits () {
+    return ''
+  }
+
   /**
    * Returns the current value converted to a string.
    * @param {any} value
