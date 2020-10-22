@@ -1,9 +1,11 @@
 // Surface fire spread rate, flame length, and scorch height
-// under 240,000 various fuel model, moisture, wind, slope,
-// and temperature vales
+// over a 24-hour period of varying temperature, wind, and fine fuel moisture
 import * as Dag from '../../dist/bundle.esm.js'
 
+// Step 1 - create the BehavePlus directed acyclical graph (DAG)
 const dag = new Dag.Bpx()
+
+// Step 2 - configure input choices and computational options
 dag.setConfigs([
   ['configure.fire.effectiveWindSpeedLimit', ['applied', 'ignored'][0]],
   ['configure.fire.firelineIntensity', ['firelineIntensity', 'flameLength'][1]],
@@ -21,16 +23,23 @@ dag.setConfigs([
   ['configure.wind.speed', ['at10m', 'at20ft', 'atMidflame'][2]]
 ])
 
+// Step 3 - specify the fire behavior variables to be produced
+// (See ./utils/BehavePlusAlphabeticalOrder.js for complete list of 1200+ names)
 dag.setSelected([
   ['surface.weighted.fire.spreadRate', true],
   ['surface.weighted.fire.flameLength', true],
   ['surface.weighted.fire.scorchHeight', true]
 ])
 
-// Get the required inputs
-const inputs = dag.requiredInputNodes()
-console.log(inputs.map(node => node.key))
+// If interested, request and display the active configuration settings
+console.log('The active configuration options are:',
+  dag.requiredConfigNodes().map(node => `${node.key} = '${node.value}'`))
 
+// Step 4 - request and display the required inputs
+console.log('Required inputs are:', dag.requiredInputNodes().map(node => node.key))
+
+// Step 5 - set the time, temperature, wind speed, wind direction, and fine dead fuel moisture
+// input values over a 24-hour period
 const cases = [
   // time, air, wsp, wdir, 1-h
   ['12am', 70, 3, 180, 0.13],
@@ -59,14 +68,9 @@ const cases = [
   ['11pm', 72, 4, 180, 0.12]
 ]
 
-const ros = dag.get('surface.weighted.fire.spreadRate')
-const fl = dag.get('surface.weighted.fire.flameLength')
-const sh = dag.get('surface.weighted.fire.scorchHeight')
-const tl1h = dag.get('site.moisture.dead.tl1h')
-const wspd = dag.get('site.wind.speed.atMidflame')
-const airt = dag.get('site.temperature.air')
-
+let str = ''
 cases.forEach((c, idx) => {
+  // Step 5 - specify the values of the required inputs
   dag.runInputs([
     ['surface.primary.fuel.model.catalogKey', ['124']],
     ['site.moisture.live.herb', [0.5]],
@@ -78,9 +82,11 @@ cases.forEach((c, idx) => {
     ['site.wind.speed.atMidflame', [88 * c[2]]],
     ['site.temperature.air', [c[1]]]
   ])
-  let str = `${c[0]} ${c[1]} ${c[2]} ${c[3]} ${c[4]} : `
-  str += ros.displayString() + ' '
-  str += fl.displayString() + ' '
-  str += sh.displayString() + '\n'
-  console.log(str)
+
+  // Step 6 - access and display the results
+  str += `${c[0]} ${c[1]} ${c[2]} ${c[3]} ${c[4]} : `
+  str += dag.get('surface.weighted.fire.spreadRate').displayString() + ' '
+  str += dag.get('surface.weighted.fire.flameLength').displayString() + ' '
+  str += dag.get('surface.weighted.fire.scorchHeight').displayString() + '\n'
 })
+console.log(str)
