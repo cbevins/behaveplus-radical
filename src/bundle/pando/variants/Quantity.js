@@ -69,17 +69,21 @@ export class Quantity extends Float {
    * Usually called by Node to express its current value on some display units and format.
    * @param {number} baseAmount
    */
-  displayValue (baseAmount) {
-    const displayAmount = this.baseAsDisplayUom(baseAmount)
-    return Float.prototype.displayValue.call(this, displayAmount)
+  displayString (baseAmount) {
+    return `${this.displayValue(baseAmount)} ${this._display._units}`
+  }
+
+  displayUnits () {
+    return this._display._units
   }
 
   /**
    * Usually called by Node to express its current value on some display units and format.
    * @param {number} baseAmount
    */
-  displayString (baseAmount) {
-    return `${this.displayValue(baseAmount)} ${this._display._units}`
+  displayValue (baseAmount) {
+    const displayAmount = this.baseAsDisplayUom(baseAmount)
+    return Float.prototype.displayValue.call(this, displayAmount)
   }
 
   setDisplayUnits (units) {
