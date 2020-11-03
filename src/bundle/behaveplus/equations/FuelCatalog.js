@@ -155,7 +155,8 @@ export function chaparralDepth (alias) {
 
 export function chaparralFuelType (alias) {
   const fuel = model(alias)
-  return fuel.domain === 'chaparral' ? fuel.fuelType : 'none'
+  // return fuel.domain === 'chaparral' ? fuel.fuelType : 'none'
+  return fuel.domain === 'chaparral' ? fuel.fuelType : 'chamise'
 }
 
 export function chaparralTotalLoad (alias) {
@@ -190,5 +191,6 @@ export function westernAspenCuringLevel (alias) {
 
 export function westernAspenFuelType (alias) {
   const fuel = model(alias)
-  return fuel.domain === 'westernAspen' ? fuel.fuelType : 'none'
+  // return fuel.domain === 'westernAspen' ? fuel.fuelType : 'none'
+  return fuel.domain === 'westernAspen' ? fuel.fuelType : 'aspenShrub'
 }
