@@ -103,15 +103,15 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   moduleKeys.forEach(key => { expect(dag.get(key).value).toEqual('inactive') })
   linkKeys.forEach(key => { expect(dag.get(key).value).toEqual('standAlone') })
 
-  // Only 71 site.*, 4 docs.*, 10 configure.*, 7 link.*, and 10 module.* Nodes should be enabled
-  expect(enabledNodes(dag).length).toEqual(102)
+  // Only 71 site.*, 4 docs.*, 5 site.doc.*, 10 configure.*, 7 link.*, and 10 module.* Nodes should be enabled
+  expect(enabledNodes(dag).length).toEqual(107)
 
   // Activating tree mortality enables 4 additional Nodes
   dag.setModules([['module.treeMortality', 'active']])
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('standAlone')
   expect(dag.get('scorch.height').isEnabled).toEqual(false)
-  expect(enabledNodes(dag).length).toEqual(106)
+  expect(enabledNodes(dag).length).toEqual(111)
 
   // Activating scorchHeight enables 1 additional Node and links with treeMortality
   dag.setModules([['module.scorchHeight', 'active']])
@@ -119,7 +119,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('standAlone')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(107)
+  expect(enabledNodes(dag).length).toEqual(112)
 
   // Activating surfaceSpot enables a 7 more Nodes with no additional links
   dag.setModules([['module.surfaceSpot', 'active']])
@@ -128,7 +128,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('standAlone')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(114)
+  expect(enabledNodes(dag).length).toEqual(119)
 
   // Activating surfaceFire enables 686 more Nodes
   // and links it with surfaceSpot, scorchHeight and treeMortality
@@ -140,7 +140,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('linkedToSurfaceFire')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(800)
+  expect(enabledNodes(dag).length).toEqual(805)
 
   // Activating crownFire enables 320 more Nodes and links it with surfaceFire
   dag.setModules([['module.crownFire', 'active']])
@@ -153,7 +153,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('linkedToSurfaceFire')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(1120)
+  expect(enabledNodes(dag).length).toEqual(1125)
 
   // Activating crownSpot enables 8 more Nodes and links it with crownFire
   dag.setModules([['module.crownSpot', 'active']])
@@ -168,7 +168,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('linkedToSurfaceFire')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(1128)
+  expect(enabledNodes(dag).length).toEqual(1133)
 
   // Activating spotting enables 19 more Nodes and no new links
   dag.setModules([['module.spotting', 'active']])
@@ -184,7 +184,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('linkedToSurfaceFire')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(1147)
+  expect(enabledNodes(dag).length).toEqual(1152)
 
   // Activating fireEllipse enables 67 more Nodes and links it to surfaceFire
   dag.setModules([['module.fireEllipse', 'active']])
@@ -202,7 +202,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('linkedToSurfaceFire')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(1214)
+  expect(enabledNodes(dag).length).toEqual(1219)
 
   // Activating ignitionProbability enables 5 more Nodes and no new links
   dag.setModules([['module.ignitionProbability', 'active']])
@@ -221,7 +221,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('linkedToSurfaceFire')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(1219)
+  expect(enabledNodes(dag).length).toEqual(1224)
 
   // Activating fireContain enables 0 more Nodes and links it to fireEllipse
   dag.setModules([['module.fireContain', 'active']])
@@ -242,25 +242,25 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
   expect(dag.get('link.scorchHeight').value).toEqual('linkedToSurfaceFire')
   expect(dag.get('module.treeMortality').value).toEqual('active')
   expect(dag.get('link.treeMortality').value).toEqual('linkedToScorchHeight')
-  expect(enabledNodes(dag).length).toEqual(1219)
+  expect(enabledNodes(dag).length).toEqual(1224)
 
   // De-activating ignitionProbability disables 5 Nodes and affects no links
   dag.setModules([['module.ignitionProbability', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(1214)
+  expect(enabledNodes(dag).length).toEqual(1219)
 
   // De-activating spotting disables 19 Nodes and affects no links
   dag.setModules([['module.spotting', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(1195)
+  expect(enabledNodes(dag).length).toEqual(1200)
 
   // De-activating fireContain disables 0 Nodes and affects 1 link to fireEllipse
   dag.setModules([['module.fireContain', 'inactive']])
   expect(dag.get('module.fireContain').value).toEqual('inactive')
   expect(dag.get('link.fireContain').value).toEqual('standAlone')
-  expect(enabledNodes(dag).length).toEqual(1195)
+  expect(enabledNodes(dag).length).toEqual(1200)
 
   // De-activating surface fire disables 686 Nodes and 4 links to surfaceFire
   dag.setModules([['module.surfaceFire', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(509)
+  expect(enabledNodes(dag).length).toEqual(514)
   expect(dag.get('link.crownFire').value).toEqual('standAlone')
   expect(dag.get('link.crownSpot').value).toEqual('linkedToCrownFire')
   expect(dag.get('link.fireContain').value).toEqual('standAlone')
@@ -271,7 +271,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
 
   // De-activating scorch height disables 1 Nodes and 1 link
   dag.setModules([['module.scorchHeight', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(508)
+  expect(enabledNodes(dag).length).toEqual(513)
   expect(dag.get('link.crownFire').value).toEqual('standAlone')
   expect(dag.get('link.crownSpot').value).toEqual('linkedToCrownFire')
   expect(dag.get('link.fireContain').value).toEqual('standAlone')
@@ -282,7 +282,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
 
   // De-activating fire ellipse disables 67 Nodes
   dag.setModules([['module.fireEllipse', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(441)
+  expect(enabledNodes(dag).length).toEqual(446)
   expect(dag.get('link.crownFire').value).toEqual('standAlone')
   expect(dag.get('link.crownSpot').value).toEqual('linkedToCrownFire')
   expect(dag.get('link.fireContain').value).toEqual('standAlone')
@@ -293,7 +293,7 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
 
   // De-activating crown fire disables 320 Nodes and 1 link
   dag.setModules([['module.crownFire', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(121)
+  expect(enabledNodes(dag).length).toEqual(126)
   expect(dag.get('link.crownFire').value).toEqual('standAlone')
   expect(dag.get('link.crownSpot').value).toEqual('standAlone')
   expect(dag.get('link.fireContain').value).toEqual('standAlone')
@@ -304,15 +304,15 @@ test('3: setModules(dag), Dag.setModules(), Dag.module()', () => {
 
   // De-activating crown spotting disables 8 Nodes and no links
   dag.setModules([['module.crownSpot', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(113)
+  expect(enabledNodes(dag).length).toEqual(118)
 
   // De-activating surface spotting disables 7 Nodes and no links
   dag.setModules([['module.surfaceSpot', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(106)
+  expect(enabledNodes(dag).length).toEqual(111)
 
   // De-activating tree mortality disables 4 Nodes and no links
   dag.setModules([['module.treeMortality', 'inactive']])
-  expect(enabledNodes(dag).length).toEqual(102)
+  expect(enabledNodes(dag).length).toEqual(107)
 })
 
 test('4: Module selection', () => {
@@ -320,11 +320,11 @@ test('4: Module selection', () => {
   dag.dna.moduleArg = 'independent'
   dag.setConfigs(config) // Standard configuration
   setModules(dag, 'inactive')
-  expect(enabledNodes(dag).length).toEqual(102)
+  expect(enabledNodes(dag).length).toEqual(107)
 
   // Part 1: activating surface fire spotting enables 7 Nodes in standAlone mode
   dag.runModules([['module.surfaceSpot', 'active']])
-  expect(enabledNodes(dag).length).toEqual(109)
+  expect(enabledNodes(dag).length).toEqual(114)
 
   dag.runSelected([['spotting.surfaceFire.spotDistance.mountainTerrain', true]])
   let inputNodes = dag.requiredInputNodes()
