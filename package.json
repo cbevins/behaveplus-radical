@@ -1,7 +1,7 @@
 {
   "name": "@cbevins/behaveplus-radical",
-  "version": "0.1.0",
-  "description": "A redesigned, clean-room implementationof the BehavePlus Wildland Fire Modeling System (v6) in ES6 Javascript",
+  "version": "0.3.0",
+  "description": "A redesigned, clean-room implementation of the BehavePlus Wildland Fire Modeling System (v6) in ES6 Javascript",
   "keywords": [],
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "prebuild": "rimraf dist",
     "build": "rollup -c",
     "compiler": "node ./src/compiler/BpxDnaCompiler.js",
+    "nodelist": "node ./src/utils/nodesList.js",
     "test": "jest",
     "test:clear": "jest --clearCache",
     "test:coverage": "jest --coverage",
