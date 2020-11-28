@@ -1,3 +1,7 @@
+# behaveplus-radical 0.3.1 (Nov 28, 2020)
+
+1 Modified .npmrc
+
 # behaveplus-radical 0.3.0 (Nov 3, 2020)
 
 1 [FEATURE] Added this `RELEASE_NOTES.md` file.
