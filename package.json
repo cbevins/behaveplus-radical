@@ -29,6 +29,8 @@
     "build": "rollup -c",
     "compiler": "node ./src/compiler/BpxDnaCompiler.js",
     "nodelist": "node ./src/utils/nodesList.js",
+    "publishToGithub": "npm publish --registry https://npm.pkg.github.com --access public",
+    "publishToNpm": "npm publish --registry https://registry.npmjs.org --access public",
     "test": "jest",
     "test:clear": "jest --clearCache",
     "test:coverage": "jest --coverage",
