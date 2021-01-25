@@ -1,14 +1,26 @@
-# behaveplus-radical 0.3.1 (Nov 28, 2020)
+# behaveplus-radical Release Notes
 
-1 Modified .npmrc
+## 0.3.2 (Jan 25, 2021)
 
-# behaveplus-radical 0.3.0 (Nov 3, 2020)
+### 1 [BUG FIX] Node.displayValue()
 
-1 [FEATURE] Added this `RELEASE_NOTES.md` file.
+Node.displayValue() now correctly converts Quantitys whose native units-of-measure are not in the 'ft/lb/min/Btu/F' set.  This had affected display of fireline intensity, map distances, and tree dbh and bark thicknesses.
 
 ---
 
-2 [FEATURE] Added `behaveplus/genome/site.doc.js` with following Nodes:
+## 0.3.1 (Nov 28, 2020)
+
+## 1 Modified .npmrc
+
+---
+
+## 0.3.0 (Nov 3, 2020)
+
+## 1 [FEATURE] Added this `RELEASE_NOTES.md` file.
+
+---
+
+## 2 [FEATURE] Added `behaveplus/genome/site.doc.js` with following Nodes:
   - `site.doc.date`
   - `site.doc.id`
   - `site.doc.location`
@@ -22,7 +34,7 @@
 
 ---
 
-3 [BUG FIX] Chaparral and westernAspen fuelType 'none' replaced with valid values.
+## 3 [BUG FIX] Chaparral and westernAspen fuelType 'none' replaced with valid values.
 
   - `FuelCatalog.chaparralFuelType (alias)`
     - when `domain` is NOT `'chaparral'`, `fuelType` is now `'chamise'` instead of `'none'`
@@ -32,8 +44,8 @@
 
 ---
 
-# behaveplus-radical 0.2.0 (Oct 22, 2020)
+## 0.2.0 (Oct 22, 2020)
 
 ---
 
-# behaveplus-radical 0.1.0
+## 0.1.0 (Sep 4, 2020)

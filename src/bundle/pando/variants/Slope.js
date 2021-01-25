@@ -7,6 +7,7 @@
  * #coverage-20200506
  */
 import { Quantity } from './Quantity.js'
+import * as Uom from '../uom/index.js'
 
 /**
  * Slope is a special case of Quantity, as it can be expressed
@@ -23,7 +24,7 @@ export class Slope extends Quantity {
   baseAsUom (baseAmount, asUnits) {
     return asUnits === 'deg'
       ? Slope.slopeDegrees(baseAmount)
-      : Quantity.prototype.baseAsUom(baseAmount, asUnits)
+      : Uom.asAmount(baseAmount, asUnits)
   }
 
   baseFromUom (fromAmount, fromUnits) {

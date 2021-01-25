@@ -49,7 +49,14 @@ export class Quantity extends Float {
    * @param {string} asUnits
    */
   baseAsUom (baseAmount, asUnits) {
-    return Uom.asAmount(baseAmount, asUnits)
+    // First get factor between Quantity native units and converter base units
+    // This will be 1 for all Quantities whose native units are already in converter base units
+    // This will be 12 for Quantities with 'in' instead of 'ft' native units
+    // This will be 1/60 for Quantities with 's' instead of 'min' time units
+    // This will be 0.000001902587519025875 for Quantities with 'y' instead of 'min' time units
+    const factor =  Uom.asAmount(1, this._specs._uomArray[0])
+    // Then convert the root amount into the requested units
+    return Uom.asAmount(baseAmount, asUnits) / factor
   }
 
   /**

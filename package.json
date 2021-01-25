@@ -1,6 +1,6 @@
 {
   "name": "@cbevins/behaveplus-radical",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A redesigned, clean-room implementation of the BehavePlus Wildland Fire Modeling System (v6) in ES6 Javascript",
   "keywords": [],
   "repository": {
