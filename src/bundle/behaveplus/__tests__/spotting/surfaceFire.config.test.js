@@ -21,7 +21,8 @@ dag.runConfigs([
   ['link.surfaceSpot', 'linkedToSurfaceFire'],
   ['link.treeMortality', 'linkedToScorchHeight'],
   ['configure.fire.firelineIntensity', ['firelineIntensity', 'flameLength'][0]],
-  ['configure.wind.speed', ['at10m', 'at20ft', 'atMidflame'][1]]
+  ['configure.wind.speed', ['at10m', 'at20ft', 'atMidflame'][1]],
+  ['configure.wind.direction', 'sourceFromNorth']
 ])
 
 test('1. Surface fire spotting', () => {
@@ -39,6 +40,7 @@ test('1. Surface fire spotting', () => {
   dag.runConfigs([['link.surfaceSpot', 'linkedToSurfaceFire']])
   inputNodes = dag.requiredInputNodes()
   expect(inputNodes.length).toEqual(12)
+  // let str=''; inputNodes.forEach(node => {str += `${node.key}\n`}); console.log(str)
   expect(inputNodes).toContain(dag.get('surface.primary.fuel.model.catalogKey'))
   expect(inputNodes).toContain(dag.get('site.moisture.dead.tl1h'))
 
